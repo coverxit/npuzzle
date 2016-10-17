@@ -8,15 +8,14 @@
 #include <map>
 using namespace std;
 
-namespace Puzzle
-{
-    constexpr int demonstration = 8;
-    constexpr int moveCost = 1;
-}
+// The n-puzzle demonstration, could be change to 15, 25, etc.
+constexpr int demonstration = 8;
+// The cost of every operation (up, down, left, right) on blank
+constexpr int moveCost = 1; 
 
 #include "GeneralSearch.hpp"
-#include "Puzzle.hpp"
-using namespace Puzzle;
+#include "NPuzzle.hpp"
+using namespace NPuzzle;
 
 class Node {
 private:
@@ -34,11 +33,11 @@ public:
     void setDepth(int depth) { this->depth = depth; }
 };
 
-typedef GeneralSearcher<State, Node, int> PuzzleSearcher;
-typedef SearchResult<Node> PuzzleSearchResult;
-typedef PuzzleSearcher::QueueT PuzzleQueue;
-typedef PuzzleSearcher::ExpandResultT PuzzleExpandResult;
-typedef PuzzleSearcher::OperationResultT PuzzleOperationResult;
+typedef GeneralSearcher<State, Node, int> NPuzzleSearcher;
+typedef SearchResult<Node> NPuzzleSearchResult;
+typedef NPuzzleSearcher::QueueT NPuzzleQueue;
+typedef NPuzzleSearcher::ExpandResultT NPuzzleExpandResult;
+typedef NPuzzleSearcher::OperationResultT NPuzzleOperationResult;
 typedef std::function<int(State)> CostFunction; // g(n), h(n)
 
 void printState(State state)
@@ -81,30 +80,20 @@ int getManhattanDistance(State state)
     return distance;
 };
 
-struct stateCompareor
-{
-    bool operator()(const State& a, const State& b) const
-    {
-        // C++ 11 overrides operator= on std::array,
-        // which could be used to compare two arrays.
-        return a == b;
-    }
-};
-
 int main(int argc, char* argv[])
 {
     int selection;
 
     //State initialState{ 1, 5, 3, 4, 0, 6, 7, 2, 8 };
     State initialState{ 1, 2, 3, 4, 8, 0, 7, 6, 5 };
-    std::map<State, bool, stateCompareor> visitedState;
+    std::map<State, bool> visitedState;
 
-    PuzzleProblem problem(initialState);
-    PuzzleSearcher searcher(
+    NPuzzleProblem problem(initialState);
+    NPuzzleSearcher searcher(
         [](State state) -> Node { return Node(state, 0); }, 
         [](Node node) -> State { return node.getState(); }
     );
-    PuzzleSearchResult result = PuzzleSearchResult::Failure();
+    NPuzzleSearchResult result = NPuzzleSearchResult::Failure();
     CostFunction hFunc;
 
     cout << "Welcome to Renjie Wu's " << demonstration << "-puzzle solver." << endl;
@@ -155,7 +144,7 @@ int main(int argc, char* argv[])
     cout << endl;
 
     result = searcher.generalSearch(&problem,
-        [&](PuzzleQueue queue, PuzzleExpandResult expand) -> PuzzleQueue {
+        [&](NPuzzleQueue queue, NPuzzleExpandResult expand) -> NPuzzleQueue {
             auto currentState = expand.getCurrentNode().getState();
             auto currentDepth = expand.getCurrentNode().getDepth();
             auto expandResult = expand.getExpandResult();
@@ -171,13 +160,13 @@ int main(int argc, char* argv[])
             vector<int> g, h;
             for (auto res : expandResult)
             {
-                g.push_back(gFunc(currentState));
-                h.push_back(hFunc(currentState));
+                g.push_back(gFunc(res.getState()));
+                h.push_back(hFunc(res.getState()));
             }
 
             // Sort all expanded state by its cost g(n) + h(n)
             std::sort(expandResult.begin(), expandResult.end(), 
-                [&](PuzzleOperationResult& a, PuzzleOperationResult& b) { 
+                [&](NPuzzleOperationResult& a, NPuzzleOperationResult& b) { 
                     auto stateA = a.getState(), stateB = b.getState();
                     return gFunc(stateA) + hFunc(stateA) < gFunc(stateB) + hFunc(stateB); 
                 }
@@ -188,7 +177,8 @@ int main(int argc, char* argv[])
             int cheapestCost = gFunc(cheapestState) + hFunc(cheapestState);
             for (auto res : expandResult)
             {
-                if (res.getCost() > cheapestCost) 
+                auto state = res.getState();
+                if (gFunc(state) + hFunc(state) > cheapestCost) 
                     break;
                 
                 auto expandState = res.getState();
@@ -208,10 +198,11 @@ int main(int argc, char* argv[])
         }
     );
 
-    if (result.isSucceeded()) cout << "Goal!!" << endl;
-    else cout << "No solution!!" << endl;
-    cout << endl;
-
-    cout << "The depth of the goal node was " << result.getFinalNode().getDepth() << endl;
+    if (!result.isSucceeded()) cout << "No solution!" << endl; 
+    else
+    {
+        cout << "Goal!!" << endl;
+        cout << "The depth of the goal node was " << result.getFinalNode().getDepth() << endl;
+    }
     return 0;
 }

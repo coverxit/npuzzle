@@ -1,7 +1,7 @@
-#ifndef __PUZZLE__
-#define __PUZZLE__
+#ifndef __NPUZZLE__
+#define __NPUZZLE__
 
-namespace Puzzle
+namespace NPuzzle
 {
     const int matrixDemonstration = (int)sqrt(demonstration + 1);
 
@@ -18,10 +18,10 @@ namespace Puzzle
         return row * matrixDemonstration + col;
     }
 
-    class PuzzleProblem : public Problem<State, int>
+    class NPuzzleProblem : public Problem<State, int>
     {
     public:
-        PuzzleProblem(State initialState) : Problem(initialState) {}
+        NPuzzleProblem(State initialState) : Problem(initialState) {}
 
         bool goalTest(State state)
         {
