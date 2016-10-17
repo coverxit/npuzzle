@@ -122,13 +122,13 @@ private:
     typedef Problem<StateT, ExpandCostT>                 ProblemT;
     typedef std::function<OperationResultT(StateT)>      OperatorT;
     typedef std::vector<OperationResultT>                OperationResultVectorT;
-    typedef std::function<NodeT(StateT)>                 QueueNodeMakerT;
-    typedef std::function<StateT(NodeT)>                 NodeToStateT;
+    typedef std::function<NodeT(StateT)>                 NodeMakerT;
+    typedef std::function<StateT(NodeT)>                 ToStateT;
 
 private:
     // Converters between StateT and NodeT.
-    QueueNodeMakerT makeNode;
-    NodeToStateT toState;
+    NodeMakerT makeNode;
+    ToStateT toState;
 
 private:
     ExpandResultT expand(NodeT node, std::vector<OperatorT> operators)
@@ -145,7 +145,7 @@ private:
     }
 
 public:
-    GeneralSearcher(QueueNodeMakerT makeNode, NodeToStateT toState) 
+    GeneralSearcher(NodeMakerT makeNode, ToStateT toState) 
         : makeNode(makeNode), toState(toState) {}
 
     // function general-search(problem, QUEUEING-FUNCTION)

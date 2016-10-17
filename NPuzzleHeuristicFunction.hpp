@@ -3,6 +3,10 @@
 
 namespace NPuzzle
 {
+    // The h(n) for Uniform Cost Search shall be
+    //   [](NPuzzleState state) -> int { return 0; }
+    // which is placed in main.cpp
+
     // Calculate the count of misplaced tiles
     int getMisplacedTileCount(NPuzzleState state)
     {

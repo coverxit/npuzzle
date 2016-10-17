@@ -23,6 +23,7 @@ namespace NPuzzle
         void setDepth(int depth) { this->depth = depth; }
     };
 
+    // Some typedefs simplify definitions
     typedef GeneralSearcher<NPuzzleState, NPuzzleNode, int> NPuzzleSearcher;
     typedef SearchResult<NPuzzleNode>                       NPuzzleSearchResult;
     typedef NPuzzleSearcher::QueueT                         NPuzzleQueue;
