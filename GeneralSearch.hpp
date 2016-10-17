@@ -4,25 +4,36 @@
 template <class StateT, typename ExpandCostT>
 class OperationResult
 {
+    typedef OperationResult<StateT, ExpandCostT> OperationResultT;
+
 private:
     bool succeeded;
     StateT state;
     ExpandCostT cost;
 
-public:
-    OperationResult(bool succeeded, StateT state, ExpandCostT cost) 
-        : succeeded(succeeded), state(state), cost(cost) {}
+private:
+    OperationResult() : succeeded(false) {}
+    OperationResult(StateT state, ExpandCostT cost)
+        : succeeded(true), state(state), cost(cost) {}
 
+public:
     bool isSucceeded() const { return succeeded; }
     StateT getState() const { return state; }
     ExpandCostT getCost() const { return cost; }
+
+public:
+    static OperationResultT Failure() { return OperationResult(); }
+    static OperationResultT Success(StateT state, ExpandCostT cost)
+    {
+        return OperationResult(state, cost);
+    }
 };
 
 template <class StateT, typename ExpandCostT>
 class Problem
 {
 protected:
-    typedef OperationResult<StateT, ExpandCostT> OperationResultT;
+    typedef OperationResult<StateT, ExpandCostT>    OperationResultT;
     typedef std::function<OperationResultT(StateT)> OperatorT;
 
 private:
@@ -63,9 +74,9 @@ public:
 template <class StateT, class NodeT, typename ExpandCostT>
 class ExpandResult
 {
-    typedef OperationResult<StateT, ExpandCostT> OperationResultT;
+    typedef OperationResult<StateT, ExpandCostT>    OperationResultT;
     typedef std::function<OperationResultT(StateT)> OperatorT;
-    typedef std::vector<OperationResultT> OperationResultVectorT;
+    typedef std::vector<OperationResultT>           OperationResultVectorT;
 
 private:
     OperationResultVectorT opResults;
@@ -83,18 +94,18 @@ template <class StateT, class NodeT, typename ExpandCostT>
 class GeneralSearcher
 {
 public:
-    typedef std::queue<NodeT> QueueT;
-    typedef OperationResult<StateT, ExpandCostT> OperationResultT;
-    typedef ExpandResult<StateT, NodeT, ExpandCostT> ExpandResultT;
+    typedef std::queue<NodeT>                            QueueT;
+    typedef OperationResult<StateT, ExpandCostT>         OperationResultT;
+    typedef ExpandResult<StateT, NodeT, ExpandCostT>     ExpandResultT;
     typedef std::function<QueueT(QueueT, ExpandResultT)> QueuingFunctionT;
-    typedef SearchResult<NodeT> SearchResultT;
+    typedef SearchResult<NodeT>                          SearchResultT;
 
 private:
-    typedef Problem<StateT, ExpandCostT> ProblemT;
-    typedef std::function<OperationResultT(StateT)> OperatorT;
-    typedef std::vector<OperationResultT> OperationResultVectorT;
-    typedef std::function<NodeT(StateT)> QueueNodeMakerT;
-    typedef std::function<StateT(NodeT)> NodeToStateT;
+    typedef Problem<StateT, ExpandCostT>                 ProblemT;
+    typedef std::function<OperationResultT(StateT)>      OperatorT;
+    typedef std::vector<OperationResultT>                OperationResultVectorT;
+    typedef std::function<NodeT(StateT)>                 QueueNodeMakerT;
+    typedef std::function<StateT(NodeT)>                 NodeToStateT;
 
 private:
     QueueNodeMakerT makeNode;
