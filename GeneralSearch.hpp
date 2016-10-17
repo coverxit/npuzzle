@@ -1,6 +1,13 @@
 #ifndef __GENERAL_SERACH__
 #define __GENERAL_SEARCH__
 
+// The result of operations in a general problem with
+// state type StateT and operation cost type ExpandCostT.
+// OperationResult could only be created by its static creators.
+// Take 8-Puzzle as example, the StateT should be an array,
+// and the ExpandCostT should be int.
+// The class should represent the result of moving blank up, down,
+// left and right.
 template <class StateT, typename ExpandCostT>
 class OperationResult
 {
@@ -29,6 +36,8 @@ public:
     }
 };
 
+// General problem with state type StateT and expand cost type ExpandCostT.
+// For 8-puzzle, the StateT is an array, the ExpandCostT is int.
 template <class StateT, typename ExpandCostT>
 class Problem
 {
@@ -45,10 +54,13 @@ public:
     StateT getInitialState() const { return initialState; }
     void setInitialState(StateT state) { initialState = state; }
 
+public:
     virtual bool goalTest(StateT state) = 0;
     virtual std::vector<OperatorT> getOperators() = 0;
 };
 
+// The result of general search, storing the final node with queue node type NodeT.
+// SearchResult could only be created by its static creators.
 template <class NodeT>
 class SearchResult
 {
@@ -71,6 +83,9 @@ public:
     static SearchResultT Success(NodeT finalNode) { return SearchResultT(finalNode); }
 };
 
+// The result of a general expanded node with state type StateT,
+// queue node type NodeT and expand cost type ExpandCostT.
+// For 8-puzzle, the StateT is an array, the ExpandCostT is int.
 template <class StateT, class NodeT, typename ExpandCostT>
 class ExpandResult
 {
@@ -90,6 +105,9 @@ public:
     OperationResultVectorT getExpandResult() const { return opResults; }
 };
 
+// The general searcher with state type StateT, queue node type NodeT
+// and expand cost type ExpandCostT.
+// For 8-puzzle, the StateT is an array, the ExpandCostT is int.
 template <class StateT, class NodeT, typename ExpandCostT>
 class GeneralSearcher
 {
@@ -108,8 +126,9 @@ private:
     typedef std::function<StateT(NodeT)>                 NodeToStateT;
 
 private:
+    // Converters between StateT and NodeT.
     QueueNodeMakerT makeNode;
-    NodeToStateT nodeToState;
+    NodeToStateT toState;
 
 private:
     ExpandResultT expand(NodeT node, std::vector<OperatorT> operators)
@@ -117,34 +136,40 @@ private:
         OperationResultVectorT ret;
         for (auto move : operators)
         {
-            auto res = move(nodeToState(node));
+            auto res = move(toState(node));
+            // Only expand nodes on which operations succeeded.
             if (res.isSucceeded())
                 ret.push_back(res);
         }
-          
         return ExpandResultT(node, ret);
     }
 
 public:
-    GeneralSearcher(QueueNodeMakerT makeNode, NodeToStateT nodeToState) 
-        : makeNode(makeNode), nodeToState(nodeToState) {}
+    GeneralSearcher(QueueNodeMakerT makeNode, NodeToStateT toState) 
+        : makeNode(makeNode), toState(toState) {}
 
+    // function general-search(problem, QUEUEING-FUNCTION)
     SearchResultT generalSearch(ProblemT* problem, QueuingFunctionT queueingFunction)
     {
+        // nodes = MAKE-QUEUE(MAKE-NODE(problem, INITIAL-STATE)
         QueueT nodes;
         nodes.push(makeNode(problem->getInitialState()));
 
         while (true)
         {
+            // if EMPTY(nodes) then return "failure"
             if (nodes.empty()) 
                 return SearchResultT::Failure();
 
+            // node = REMOVE-FRONT(nodes)
             auto node = nodes.front();
             nodes.pop();
 
-            if (problem->goalTest(nodeToState(node)))
+            // if problem.GOTL-TEST(node.STATE) succeeds then return node
+            if (problem->goalTest(toState(node)))
                 return SearchResultT::Success(node);
 
+            // nodes = QUEUING-FUNCTION(nodes, EXPAND(node, problem.OPERATORS))
             nodes = queueingFunction(nodes, expand(node, problem->getOperators()));
         }
     }
