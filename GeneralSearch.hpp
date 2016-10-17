@@ -5,12 +5,15 @@ template <class StateT, typename ExpandCostT>
 class OperationResult
 {
 private:
+    bool succeeded;
     StateT state;
     ExpandCostT cost;
 
 public:
-    OperationResult(StateT state, ExpandCostT cost) : state(state), cost(cost) {}
+    OperationResult(bool succeeded, StateT state, ExpandCostT cost) 
+        : succeeded(succeeded), state(state), cost(cost) {}
 
+    bool isSucceeded() const { return succeeded; }
     StateT getState() const { return state; }
     ExpandCostT getCost() const { return cost; }
 };
@@ -41,15 +44,15 @@ class SearchResult
     typedef SearchResult<NodeT> SearchResultT;
 
 private:
-    bool succeded;
+    bool succeeded;
     NodeT finalNode;
 
 private:
-    SearchResult() : succeded(false) {}
+    SearchResult() : succeeded(false) {}
     SearchResult(NodeT finalNode) : finalNode(finalNode) {}
 
 public:
-    bool isSucceeded() const { return succeded; }
+    bool isSucceeded() const { return succeeded; }
     NodeT getFinalNode() const { return finalNode; }
 
 public:
@@ -102,8 +105,12 @@ private:
     {
         OperationResultVectorT ret;
         for (auto move : operators)
-            ret.push_back(move(nodeToState(node)));
-
+        {
+            auto res = move(nodeToState(node));
+            if (res.isSucceeded())
+                ret.push_back(res);
+        }
+          
         return ExpandResultT(node, ret);
     }
 
