@@ -72,18 +72,22 @@ namespace NPuzzle
                         if (visitedState[state])
                             continue;
 
-                        auto expandState = res.getState();
-                        cout << "The best state to expand with a g(n) = " << gFunc(expandState);
-                        cout << " and h(n) = " << hFunc(expandState) << " is..." << endl;
-                        printState(expandState);
-                        cout << "Expanding this node..." << endl;
-                        cout << endl;
-
                         // Enqueue with depth + 1
-                        queue.push(NPuzzleNode(expandState, currentDepth + 1));
+                        queue.push(NPuzzleNode(state, currentDepth + 1));
 
                         totalNodesExpanded++;
                         visitedState[state] = true;
+
+                        // Check if final state
+                        if (problem.goalTest(state))
+                            break;
+
+                        // Print expanding information
+                        cout << "The best state to expand with a g(n) = " << gFunc(state);
+                        cout << " and h(n) = " << hFunc(state) << " is..." << endl;
+                        printState(state);
+                        cout << "Expanding this node..." << endl;
+                        cout << endl;
                     }
 
                     // Is the size of queue larger?
