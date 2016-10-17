@@ -8,10 +8,13 @@
 #include <map>
 using namespace std;
 
-// The n-puzzle demonstration, could be change to 15, 25, etc.
-constexpr int demonstration = 8;
-// The cost of every operation (up, down, left, right) on blank
-constexpr int moveCost = 1; 
+namespace NPuzzle
+{
+    // The n-puzzle demonstration, could be change to 15, 25, etc.
+    constexpr int demonstration = 8;
+    // The cost of every operation (up, down, left, right) on blank
+    constexpr int moveCost = 1;
+}
 
 #include "GeneralSearch.hpp"
 #include "NPuzzle.hpp"
@@ -85,7 +88,7 @@ int main(int argc, char* argv[])
     int selection;
 
     // Statistic
-    unsigned int nodesExpanded = 0;
+    unsigned int totalNodesExpanded = 0;
     unsigned int maxQueueLength = 1; // The initial state is in queue.
 
     // State initialState{ 1, 5, 3, 4, 0, 6, 7, 2, 8 };
@@ -94,11 +97,12 @@ int main(int argc, char* argv[])
 
     NPuzzleProblem problem(initialState);
     NPuzzleSearcher searcher(
-        [](State state) -> Node { return Node(state, 0); }, 
+        // The depth of initial state is 0.
+        [](State state) -> Node { return Node(state, 0); },
         [](Node node) -> State { return node.getState(); }
     );
     NPuzzleSearchResult result = NPuzzleSearchResult::Failure();
-    CostFunction hFunc;
+    CostFunction hFunc; // h(n) based on user's section
 
     cout << "Welcome to Renjie Wu's " << demonstration << "-puzzle solver." << endl;
     cout << "Type \"1\" to use a defualt puzzle, or \"2\" to enter your own puzzle." << endl;
@@ -145,6 +149,7 @@ int main(int argc, char* argv[])
 
     cout << "Expanding state:" << endl;
     printState(initialState);
+    visitedState[initialState] = true;
     cout << endl;
 
     result = searcher.generalSearch(&problem,
@@ -152,10 +157,6 @@ int main(int argc, char* argv[])
             auto currentState = expand.getCurrentNode().getState();
             auto currentDepth = expand.getCurrentNode().getDepth();
             auto expandResult = expand.getExpandResult();
-
-            // Has current state visited?
-            if (visitedState[currentState])
-                return queue;
 
             // g(n) = depth + moveCost
             CostFunction gFunc = [&](State stete) { return currentDepth + moveCost; };
@@ -184,6 +185,10 @@ int main(int argc, char* argv[])
                 auto state = res.getState();
                 if (gFunc(state) + hFunc(state) > cheapestCost) 
                     break;
+
+                // Has current state visited?
+                if (visitedState[state])
+                    continue;
                 
                 auto expandState = res.getState();
                 cout << "The best state to expand with a g(n) = " << gFunc(expandState);
@@ -192,26 +197,28 @@ int main(int argc, char* argv[])
                 cout << "Expanding this node..." << endl;
                 cout << endl;
 
-                queue.push(Node(expandState, currentDepth + 1));  // Enqueue with depth + 1
-                nodesExpanded++; // Expanded nodes + 1
+                // Enqueue with depth + 1
+                queue.push(Node(expandState, currentDepth + 1)); 
+                
+                totalNodesExpanded++;
+                visitedState[state] = true;
             }
 
             // Is the size of queue larger?
             if (queue.size() > maxQueueLength)
                 maxQueueLength = queue.size();
 
-            // Set current state visited
-            visitedState[currentState] = true;
             return queue;
         }
     );
 
-    if (!result.isSucceeded()) cout << "No solution!" << endl; 
+    if (!result.isSucceeded()) 
+        cout << "No solution!" << endl; 
     else
     {
         cout << "Goal!!" << endl << endl;
         cout << "To solve this problem, the search alogrithm expanded a total of ";
-        cout << nodesExpanded << " nodes." << endl;
+        cout << totalNodesExpanded << " nodes." << endl;
         cout << "The maximum number of nodes in the queue at any one time was ";
         cout << maxQueueLength << "." << endl;
         cout << "The depth of the goal node was ";
