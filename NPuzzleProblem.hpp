@@ -25,7 +25,8 @@ namespace NPuzzle
         std::vector<OperatorT> getOperators()
         {
             // Move up
-            auto moveUp = [&](NPuzzleState state) -> OperationResultT {
+            auto moveUp = [&](NPuzzleState state) -> OperationResultT 
+            {
                 bool canMove = false;
                 
                 // Find blank position.
@@ -44,7 +45,8 @@ namespace NPuzzle
             };
 
             // Move down
-            auto moveDown = [&](NPuzzleState state) -> OperationResultT {
+            auto moveDown = [&](NPuzzleState state) -> OperationResultT 
+            {
                 bool canMove = false;
 
                 // Find blank position.
@@ -63,7 +65,8 @@ namespace NPuzzle
             };
 
             // Move left
-            auto moveLeft = [&](NPuzzleState state) -> OperationResultT {
+            auto moveLeft = [&](NPuzzleState state) -> OperationResultT 
+            {
                 bool canMove = false;
 
                 // Find blank position.
@@ -82,7 +85,8 @@ namespace NPuzzle
             };
 
             // Move right
-            auto moveRight = [&](NPuzzleState state) -> OperationResultT {
+            auto moveRight = [&](NPuzzleState state) -> OperationResultT
+            {
                 bool canMove = false;
 
                 // Find blank position.
@@ -100,9 +104,7 @@ namespace NPuzzle
                                : OperationResultT::Failure();
             };
 
-            return std::vector<OperatorT> {
-                moveUp, moveDown, moveLeft, moveRight
-            };
+            return std::vector<OperatorT> { moveUp, moveDown, moveLeft, moveRight };
         }
     };
 }

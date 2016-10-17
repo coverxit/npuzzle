@@ -31,10 +31,10 @@ namespace NPuzzle
             );
 
             visitedState[initialState] = true;
-
-            return searcher.generalSearch(&problem,
+            auto result = searcher.generalSearch(&problem,
                 // Queuing-Function
-                [&](NPuzzleQueue queue, NPuzzleExpandResult expand) -> NPuzzleQueue {
+                [&](NPuzzleQueue queue, NPuzzleExpandResult expand) -> NPuzzleQueue 
+                {
                     auto currentState = expand.getCurrentNode().getState();
                     auto currentDepth = expand.getCurrentNode().getDepth();
                     auto expandResult = expand.getExpandResult();
@@ -52,7 +52,8 @@ namespace NPuzzle
 
                     // Sort all expanded state by its cost g(n) + h(n)
                     std::sort(expandResult.begin(), expandResult.end(),
-                        [&](NPuzzleOperationResult& a, NPuzzleOperationResult& b) {
+                        [&](NPuzzleOperationResult& a, NPuzzleOperationResult& b) -> int
+                        {
                             auto stateA = a.getState(), stateB = b.getState();
                             return gFunc(stateA) + hFunc(stateA) < gFunc(stateB) + hFunc(stateB);
                         }
@@ -92,6 +93,8 @@ namespace NPuzzle
                     return queue;
                 }
             );
+            
+            return result;
         }
     };
 }

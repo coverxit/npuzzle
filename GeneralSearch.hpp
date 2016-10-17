@@ -72,7 +72,7 @@ private:
 
 private:
     SearchResult() : succeeded(false) {}
-    SearchResult(NodeT finalNode) : finalNode(finalNode) {}
+    SearchResult(NodeT finalNode) : succeeded(true), finalNode(finalNode) {}
 
 public:
     bool isSucceeded() const { return succeeded; }
