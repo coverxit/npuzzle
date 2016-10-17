@@ -3,9 +3,6 @@
 
 namespace Puzzle
 {
-    constexpr int demonstration = 8;
-    constexpr int moveCost = 1;
-
     const int matrixDemonstration = (int)sqrt(demonstration + 1);
 
     typedef std::array<int, demonstration + 1> State;
