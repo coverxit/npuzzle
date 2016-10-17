@@ -66,12 +66,12 @@ int getManhattanDistance(State state)
     int distance = 0;
     for (unsigned int i = 0; i < state.size(); i++)
     {
-        if (state[i] > 0 && i + 1 != state[i]) //Not blank and misplaced
+        if (state[i] > 0 && i + 1 != state[i]) // Not blank and misplaced
         {
             // Get current position and find target position
             int row, col, targetRow, targetCol;
             indexToMatrix(i, row, col);
-            indexToMatrix(state[i], targetRow, targetCol);
+            indexToMatrix(state[i] - 1, targetRow, targetCol);
 
             // This distance is steps needed by moving to target position.
             distance += abs(targetRow - row) + abs(targetCol - col);
@@ -84,7 +84,11 @@ int main(int argc, char* argv[])
 {
     int selection;
 
-    //State initialState{ 1, 5, 3, 4, 0, 6, 7, 2, 8 };
+    // Statistic
+    unsigned int nodesExpanded = 0;
+    unsigned int maxQueueLength = 1; // The initial state is in queue.
+
+    // State initialState{ 1, 5, 3, 4, 0, 6, 7, 2, 8 };
     State initialState{ 1, 2, 3, 4, 8, 0, 7, 6, 5 };
     std::map<State, bool> visitedState;
 
@@ -188,9 +192,13 @@ int main(int argc, char* argv[])
                 cout << "Expanding this node..." << endl;
                 cout << endl;
 
-                // Enqueue with depth + 1
-                queue.push(Node(expandState, currentDepth + 1));
+                queue.push(Node(expandState, currentDepth + 1));  // Enqueue with depth + 1
+                nodesExpanded++; // Expanded nodes + 1
             }
+
+            // Is the size of queue larger?
+            if (queue.size() > maxQueueLength)
+                maxQueueLength = queue.size();
 
             // Set current state visited
             visitedState[currentState] = true;
@@ -201,8 +209,13 @@ int main(int argc, char* argv[])
     if (!result.isSucceeded()) cout << "No solution!" << endl; 
     else
     {
-        cout << "Goal!!" << endl;
-        cout << "The depth of the goal node was " << result.getFinalNode().getDepth() << endl;
+        cout << "Goal!!" << endl << endl;
+        cout << "To solve this problem, the search alogrithm expanded a total of ";
+        cout << nodesExpanded << " nodes." << endl;
+        cout << "The maximum number of nodes in the queue at any one time was ";
+        cout << maxQueueLength << "." << endl;
+        cout << "The depth of the goal node was ";
+        cout << result.getFinalNode().getDepth() << "." << endl;
     }
     return 0;
 }
