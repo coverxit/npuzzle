@@ -17,12 +17,13 @@ namespace NPuzzle
 
     public:
         // g(n) = depth
-        static int gFunc(NPuzzleNode node) { return node.getDepth(); }
+        static int GFunc(NPuzzleNode node) { return node.getDepth(); }
 
     public:
         unsigned int getTotalNodesExpanded() const { return totalNodesExpanded; }
         unsigned int getMaxQueueLength() const { return maxQueueLength; }
 
+        CostFunction getHeuristicFunction() const { return hFunc; }
         void setHeuristicFunction(CostFunction hFunc) { this->hFunc = hFunc; }
 
         NPuzzleSearchResult solve(NPuzzleState initialState)
@@ -44,7 +45,7 @@ namespace NPuzzle
                     // Print expanding information
                     if (currentNode.getState() != initialState)
                     {
-                        cout << "The best state to expand with a g(n) = " << gFunc(currentNode);
+                        cout << "The best state to expand with a g(n) = " << GFunc(currentNode);
                         cout << " and h(n) = " << hFunc(currentNode) << " is..." << endl;
                         printState(currentNode.getState());
                         cout << "Expanding this node..." << endl;
@@ -53,7 +54,7 @@ namespace NPuzzle
                    
                     for (auto state : expand.getExpandedState())
                     {
-                        // Has current state visited?
+                        // Has this state visited?
                         if (visitedState[state])
                             continue;
 
@@ -65,7 +66,7 @@ namespace NPuzzle
                                 // The element with less f(n) has higher priority,
                                 // which actually constructs a min-heap.
                                 // (The STL heap is a max-heap default)
-                                return gFunc(a) + hFunc(a) > gFunc(b) + hFunc(b);
+                                return GFunc(a) + hFunc(a) > GFunc(b) + hFunc(b);
                             }
                         );
 
