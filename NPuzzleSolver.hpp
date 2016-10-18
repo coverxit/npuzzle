@@ -29,7 +29,8 @@ namespace NPuzzle
         {
             NPuzzleQueueComparator queueComparator = [&](const NPuzzleNode& a, const NPuzzleNode& b) {
                 // The element with less f(n) has higher priority,
-                // which actually constructs a min-heap
+                // which actually constructs a min-heap.
+                // (The STL heap is a max-heap default)
                 return gFunc(a) + hFunc(a) > gFunc(b) + hFunc(b);
             };
 
@@ -63,7 +64,7 @@ namespace NPuzzle
                         if (visitedState[state])
                             continue;
 
-                        // Enqueue expanded state with depth + 1
+                        // Enqueue a new node with expanded state and depth + 1
                         queue.push_back(NPuzzleNode(state, currentNode.getDepth() + 1));
                         // Adjust heap for keeping its order
                         std::push_heap(queue.begin(), queue.end(), queueComparator);

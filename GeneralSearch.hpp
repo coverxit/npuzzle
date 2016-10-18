@@ -165,7 +165,7 @@ public:
             // node = REMOVE-FRONT(nodes)
             auto node = nodes.front();
             // Adjust heap and remove the highest-priority element
-            pop_heap(nodes.begin(), nodes.end(), comparator);
+            std::pop_heap(nodes.begin(), nodes.end(), comparator);
             nodes.pop_back();
 
             // if problem.GOTL-TEST(node.STATE) succeeds then return node
