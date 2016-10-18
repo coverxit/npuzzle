@@ -27,7 +27,7 @@ namespace NPuzzle
 
         NPuzzleSearchResult solve(NPuzzleState initialState)
         {
-            NPuzzleQueueComparator heapComparator = [&](const NPuzzleNode& a, const NPuzzleNode& b) {
+            NPuzzleQueueComparator queueComparator = [&](const NPuzzleNode& a, const NPuzzleNode& b) {
                 // The element with less f(n) has higher priority,
                 // which actually constructs a min-heap
                 return gFunc(a) + hFunc(a) > gFunc(b) + hFunc(b);
@@ -38,7 +38,7 @@ namespace NPuzzle
                 // The depth of initial state is 0.
                 [](NPuzzleState state) -> NPuzzleNode { return NPuzzleNode(state, 0); },
                 [](NPuzzleNode node) -> NPuzzleState { return node.getState(); },
-                heapComparator
+                queueComparator
             );
 
             visitedState[initialState] = true;
@@ -66,7 +66,7 @@ namespace NPuzzle
                         // Enqueue expanded state with depth + 1
                         queue.push_back(NPuzzleNode(state, currentNode.getDepth() + 1));
                         // Adjust heap for keeping its order
-                        std::push_heap(queue.begin(), queue.end(), heapComparator);
+                        std::push_heap(queue.begin(), queue.end(), queueComparator);
 
                         // Update assoicated fields
                         nodesExpanded++;
