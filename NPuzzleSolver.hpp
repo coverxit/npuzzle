@@ -27,19 +27,11 @@ namespace NPuzzle
 
         NPuzzleSearchResult solve(NPuzzleState initialState)
         {
-            NPuzzleQueueComparator queueComparator = [&](const NPuzzleNode& a, const NPuzzleNode& b) {
-                // The element with less f(n) has higher priority,
-                // which actually constructs a min-heap.
-                // (The STL heap is a max-heap default)
-                return gFunc(a) + hFunc(a) > gFunc(b) + hFunc(b);
-            };
-
             NPuzzleProblem problem(initialState);
             NPuzzleSearcher searcher(
                 // The depth of initial state is 0.
                 [](NPuzzleState state) -> NPuzzleNode { return NPuzzleNode(state, 0); },
-                [](NPuzzleNode node) -> NPuzzleState { return node.getState(); },
-                queueComparator
+                [](NPuzzleNode node) -> NPuzzleState { return node.getState(); }
             );
 
             visitedState[initialState] = true;
@@ -48,7 +40,6 @@ namespace NPuzzle
                 [&](NPuzzleQueue queue, NPuzzleExpandResult expand) -> NPuzzleQueue 
                 {
                     auto currentNode = expand.getCurrentNode();
-                    int nodesExpanded = 0;
 
                     // Print expanding information
                     if (currentNode.getState() != initialState)
@@ -56,6 +47,8 @@ namespace NPuzzle
                         cout << "The best state to expand with a g(n) = " << gFunc(currentNode);
                         cout << " and h(n) = " << hFunc(currentNode) << " is..." << endl;
                         printState(currentNode.getState());
+                        cout << "Expanding this node..." << endl;
+                        cout << endl;
                     }
                    
                     for (auto state : expand.getExpandedState())
@@ -66,24 +59,23 @@ namespace NPuzzle
 
                         // Enqueue a new node with expanded state and depth + 1
                         queue.push_back(NPuzzleNode(state, currentNode.getDepth() + 1));
-                        // Adjust heap for keeping its order
-                        std::push_heap(queue.begin(), queue.end(), queueComparator);
+                        // Keep it a heap
+                        std::make_heap(queue.begin(), queue.end(), 
+                            [&](const NPuzzleNode& a, const NPuzzleNode& b) {
+                                // The element with less f(n) has higher priority,
+                                // which actually constructs a min-heap.
+                                // (The STL heap is a max-heap default)
+                                return gFunc(a) + hFunc(a) > gFunc(b) + hFunc(b);
+                            }
+                        );
 
                         // Update assoicated fields
-                        nodesExpanded++;
                         totalNodesExpanded++;
                         visitedState[state] = true;
 
                         // Check if final state
                         if (problem.goalTest(state))
                             break;
-                    }
-
-                    // Have child nodes expanded?
-                    if (nodesExpanded > 0)
-                    {
-                        cout << "Expanding this node..." << endl;
-                        cout << endl;
                     }
 
                     // Is the size of current queue larger than previous?

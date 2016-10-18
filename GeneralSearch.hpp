@@ -110,9 +110,8 @@ template <class StateT, class NodeT, typename ExpandCostT>
 class GeneralSearcher
 {
 public:
-    // Use vector as the underlying container for STL heap operations.
+    // Use vector as the underlying container for an queue instead of using STL queue directly.
     typedef std::vector<NodeT>                              QueueT;
-    typedef std::function<bool(const NodeT&, const NodeT&)> QueueComparatorT;
     typedef OperationResult<StateT, ExpandCostT>            OperationResultT;
     typedef ExpandResult<StateT, NodeT>                     ExpandResultT;
     typedef std::function<QueueT(QueueT, ExpandResultT)>    QueuingFunctionT;
@@ -129,8 +128,6 @@ private:
     // Converters between StateT and NodeT.
     NodeMakerT makeNode;
     ToStateT toState;
-    // The comparator function used on STL heap operations.
-    QueueComparatorT comparator;
 
 private:
     ExpandResultT expand(NodeT node, std::vector<OperatorT> operators)
@@ -147,8 +144,8 @@ private:
     }
 
 public:
-    GeneralSearcher(NodeMakerT makeNode, ToStateT toState, QueueComparatorT comparator)
-        : makeNode(makeNode), toState(toState), comparator(comparator) {}
+    GeneralSearcher(NodeMakerT makeNode, ToStateT toState)
+        : makeNode(makeNode), toState(toState) {}
 
     // function general-search(problem, QUEUEING-FUNCTION)
     SearchResultT generalSearch(ProblemT* problem, QueuingFunctionT queueingFunction)
@@ -164,9 +161,7 @@ public:
 
             // node = REMOVE-FRONT(nodes)
             auto node = nodes.front();
-            // Adjust heap and remove the highest-priority element
-            std::pop_heap(nodes.begin(), nodes.end(), comparator);
-            nodes.pop_back();
+            nodes.erase(nodes.begin());
 
             // if problem.GOTL-TEST(node.STATE) succeeds then return node
             if (problem->goalTest(toState(node)))
