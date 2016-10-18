@@ -59,8 +59,8 @@ int main(int argc, char* argv[])
         // h(n) based on selection
         switch (selection)
         {
-        case 1: // Uniform Cost Search, h(n) = 0
-            solver.setHeuristicFunction([](NPuzzleState state) -> int { return 0; });
+        case 1: // Uniform Cost Search
+            solver.setHeuristicFunction(getUniformHeuristicCost);
             break;
 
         case 2: // A* with Misplaced Tile

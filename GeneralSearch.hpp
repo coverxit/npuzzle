@@ -83,26 +83,24 @@ public:
     static SearchResultT Success(NodeT finalNode) { return SearchResultT(finalNode); }
 };
 
-// The result of a general expanded node with state type StateT,
-// queue node type NodeT and expand cost type ExpandCostT.
-// For 8-puzzle, the StateT is an array, the ExpandCostT is int.
-template <class StateT, class NodeT, typename ExpandCostT>
+// The result of a general expanded node with state type StateT 
+// and queue node type NodeT.
+// For 8-puzzle, the StateT is an array.
+template <class StateT, class NodeT>
 class ExpandResult
 {
-    typedef OperationResult<StateT, ExpandCostT>    OperationResultT;
-    typedef std::function<OperationResultT(StateT)> OperatorT;
-    typedef std::vector<OperationResultT>           OperationResultVectorT;
+    typedef std::vector<StateT> ExpandedStateVectorT;
 
 private:
     NodeT currentNode;
-    OperationResultVectorT opResults;
+    ExpandedStateVectorT expandedState;
 
 public:
-    ExpandResult(NodeT expandedNode, OperationResultVectorT opResults) :
-        currentNode(expandedNode), opResults(opResults) {}
+    ExpandResult(NodeT expandedNode, ExpandedStateVectorT expandedState) :
+        currentNode(expandedNode), expandedState(expandedState) {}
 
     NodeT getCurrentNode() const { return currentNode; }
-    OperationResultVectorT getExpandResult() const { return opResults; }
+    ExpandedStateVectorT getExpandedState() const { return expandedState; }
 };
 
 // The general searcher with state type StateT, queue node type NodeT
@@ -112,48 +110,51 @@ template <class StateT, class NodeT, typename ExpandCostT>
 class GeneralSearcher
 {
 public:
-    typedef std::queue<NodeT>                            QueueT;
-    typedef OperationResult<StateT, ExpandCostT>         OperationResultT;
-    typedef ExpandResult<StateT, NodeT, ExpandCostT>     ExpandResultT;
-    typedef std::function<QueueT(QueueT, ExpandResultT)> QueuingFunctionT;
-    typedef SearchResult<NodeT>                          SearchResultT;
+    // Use vector as the underlying container for STL heap operations.
+    typedef std::vector<NodeT>                              QueueT;
+    typedef std::function<bool(const NodeT&, const NodeT&)> QueueComparatorT;
+    typedef OperationResult<StateT, ExpandCostT>            OperationResultT;
+    typedef ExpandResult<StateT, NodeT>                     ExpandResultT;
+    typedef std::function<QueueT(QueueT, ExpandResultT)>    QueuingFunctionT;
+    typedef SearchResult<NodeT>                             SearchResultT;
 
 private:
-    typedef Problem<StateT, ExpandCostT>                 ProblemT;
-    typedef std::function<OperationResultT(StateT)>      OperatorT;
-    typedef std::vector<OperationResultT>                OperationResultVectorT;
-    typedef std::function<NodeT(StateT)>                 NodeMakerT;
-    typedef std::function<StateT(NodeT)>                 ToStateT;
+    typedef Problem<StateT, ExpandCostT>                    ProblemT;
+    typedef std::function<OperationResultT(StateT)>         OperatorT; 
+    typedef std::vector<StateT>                             ExpandedStateVectorT;
+    typedef std::function<NodeT(StateT)>                    NodeMakerT;
+    typedef std::function<StateT(NodeT)>                    ToStateT;
 
 private:
     // Converters between StateT and NodeT.
     NodeMakerT makeNode;
     ToStateT toState;
+    // The comparator function used on STL heap operations.
+    QueueComparatorT comparator;
 
 private:
     ExpandResultT expand(NodeT node, std::vector<OperatorT> operators)
     {
-        OperationResultVectorT ret;
+        ExpandedStateVectorT ret;
         for (auto move : operators)
         {
             auto res = move(toState(node));
             // Only expand nodes on which operations succeeded.
             if (res.isSucceeded())
-                ret.push_back(res);
+                ret.push_back(res.getState());
         }
         return ExpandResultT(node, ret);
     }
 
 public:
-    GeneralSearcher(NodeMakerT makeNode, ToStateT toState) 
-        : makeNode(makeNode), toState(toState) {}
+    GeneralSearcher(NodeMakerT makeNode, ToStateT toState, QueueComparatorT comparator)
+        : makeNode(makeNode), toState(toState), comparator(comparator) {}
 
     // function general-search(problem, QUEUEING-FUNCTION)
     SearchResultT generalSearch(ProblemT* problem, QueuingFunctionT queueingFunction)
     {
         // nodes = MAKE-QUEUE(MAKE-NODE(problem, INITIAL-STATE)
-        QueueT nodes;
-        nodes.push(makeNode(problem->getInitialState()));
+        QueueT nodes{ makeNode(problem->getInitialState()) }; // Enqueue initial state
 
         while (true)
         {
@@ -163,7 +164,9 @@ public:
 
             // node = REMOVE-FRONT(nodes)
             auto node = nodes.front();
-            nodes.pop();
+            // Adjust heap and remove the highest-priority element
+            pop_heap(nodes.begin(), nodes.end(), comparator);
+            nodes.pop_back();
 
             // if problem.GOTL-TEST(node.STATE) succeeds then return node
             if (problem->goalTest(toState(node)))

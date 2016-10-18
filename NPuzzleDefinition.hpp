@@ -29,7 +29,8 @@ namespace NPuzzle
     typedef NPuzzleSearcher::QueueT                         NPuzzleQueue;
     typedef NPuzzleSearcher::ExpandResultT                  NPuzzleExpandResult;
     typedef NPuzzleSearcher::OperationResultT               NPuzzleOperationResult;
-    typedef std::function<int(NPuzzleState)>                CostFunction; // g(n), h(n)
+    typedef std::function<int(NPuzzleNode)>                 CostFunction; // g(n), h(n)
+    typedef NPuzzleSearcher::QueueComparatorT               NPuzzleQueueComparator;
 }
 
 #endif

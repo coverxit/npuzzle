@@ -16,6 +16,10 @@ namespace NPuzzle
         CostFunction hFunc;
 
     public:
+        // g(n) = depth
+        static int gFunc(NPuzzleNode node) { return node.getDepth(); }
+
+    public:
         unsigned int getTotalNodesExpanded() const { return totalNodesExpanded; }
         unsigned int getMaxQueueLength() const { return maxQueueLength; }
 
@@ -23,11 +27,18 @@ namespace NPuzzle
 
         NPuzzleSearchResult solve(NPuzzleState initialState)
         {
+            NPuzzleQueueComparator heapComparator = [&](const NPuzzleNode& a, const NPuzzleNode& b) {
+                // The element with less f(n) has higher priority,
+                // which actually constructs a min-heap
+                return gFunc(a) + hFunc(a) > gFunc(b) + hFunc(b);
+            };
+
             NPuzzleProblem problem(initialState);
             NPuzzleSearcher searcher(
                 // The depth of initial state is 0.
                 [](NPuzzleState state) -> NPuzzleNode { return NPuzzleNode(state, 0); },
-                [](NPuzzleNode node) -> NPuzzleState { return node.getState(); }
+                [](NPuzzleNode node) -> NPuzzleState { return node.getState(); },
+                heapComparator
             );
 
             visitedState[initialState] = true;
@@ -35,61 +46,46 @@ namespace NPuzzle
                 // Queuing-Function
                 [&](NPuzzleQueue queue, NPuzzleExpandResult expand) -> NPuzzleQueue 
                 {
-                    auto currentDepth = expand.getCurrentNode().getDepth();
-                    auto expandResult = expand.getExpandResult();
+                    auto currentNode = expand.getCurrentNode();
+                    int nodesExpanded = 0;
 
-                    // g(n) = depth + moveCost
-                    CostFunction gFunc = [&](NPuzzleState stete) { return currentDepth + moveCost; };
-
-                    // Calculate all g(n) & h(n)
-                    vector<int> g, h;
-                    for (auto res : expandResult)
+                    // Print expanding information
+                    if (currentNode.getState() != initialState)
                     {
-                        g.push_back(gFunc(res.getState()));
-                        h.push_back(hFunc(res.getState()));
+                        cout << "The best state to expand with a g(n) = " << gFunc(currentNode);
+                        cout << " and h(n) = " << hFunc(currentNode) << " is..." << endl;
+                        printState(currentNode.getState());
                     }
-
-                    // Sort all expanded state by its cost g(n) + h(n)
-                    std::sort(expandResult.begin(), expandResult.end(),
-                        [&](NPuzzleOperationResult& a, NPuzzleOperationResult& b) -> int
-                        {
-                            auto stateA = a.getState(), stateB = b.getState();
-                            return gFunc(stateA) + hFunc(stateA) < gFunc(stateB) + hFunc(stateB);
-                        }
-                    );
-
-                    // Enqueue cheapest nodes
-                    NPuzzleState cheapestState = expandResult[0].getState();
-                    int cheapestCost = gFunc(cheapestState) + hFunc(cheapestState);
-                    for (auto res : expandResult)
+                   
+                    for (auto state : expand.getExpandedState())
                     {
-                        auto state = res.getState();
-                        if (gFunc(state) + hFunc(state) > cheapestCost)
-                            break;
-
                         // Has current state visited?
                         if (visitedState[state])
                             continue;
 
-                        // Enqueue with depth + 1
-                        queue.push(NPuzzleNode(state, currentDepth + 1));
+                        // Enqueue expanded state with depth + 1
+                        queue.push_back(NPuzzleNode(state, currentNode.getDepth() + 1));
+                        // Adjust heap for keeping its order
+                        std::push_heap(queue.begin(), queue.end(), heapComparator);
 
+                        // Update assoicated fields
+                        nodesExpanded++;
                         totalNodesExpanded++;
                         visitedState[state] = true;
 
                         // Check if final state
                         if (problem.goalTest(state))
                             break;
+                    }
 
-                        // Print expanding information
-                        cout << "The best state to expand with a g(n) = " << gFunc(state);
-                        cout << " and h(n) = " << hFunc(state) << " is..." << endl;
-                        printState(state);
+                    // Have child nodes expanded?
+                    if (nodesExpanded > 0)
+                    {
                         cout << "Expanding this node..." << endl;
                         cout << endl;
                     }
 
-                    // Is the size of queue larger?
+                    // Is the size of current queue larger than previous?
                     if (queue.size() > maxQueueLength)
                         maxQueueLength = queue.size();
 

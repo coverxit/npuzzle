@@ -3,14 +3,18 @@
 
 namespace NPuzzle
 {
-    // The h(n) for Uniform Cost Search shall be
-    //   [](NPuzzleState state) -> int { return 0; }
-    // which is placed in main.cpp
+    // Uniform Cost Search, h(n) = 0
+    int getUniformHeuristicCost(NPuzzleNode node)
+    {
+        return 0;
+    }
 
     // Calculate the count of misplaced tiles
-    int getMisplacedTileCount(NPuzzleState state)
+    int getMisplacedTileCount(NPuzzleNode node)
     {
+        auto state = node.getState();
         int count = 0;
+
         for (int i = 0; i < (int) state.size(); i++)
             if (state[i] > 0 && i + 1 != state[i]) // Not blank and misplaced
                 count++;
@@ -18,9 +22,11 @@ namespace NPuzzle
     };
 
     // Calculate Manhattan distance
-    int getManhattanDistance(NPuzzleState state)
+    int getManhattanDistance(NPuzzleNode node)
     {
+        auto state = node.getState();
         int distance = 0;
+
         for (int i = 0; i < (int) state.size(); i++)
         {
             if (state[i] > 0 && i + 1 != state[i]) // Not blank and misplaced
