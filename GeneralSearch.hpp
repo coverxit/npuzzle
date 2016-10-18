@@ -94,8 +94,8 @@ class ExpandResult
     typedef std::vector<OperationResultT>           OperationResultVectorT;
 
 private:
-    OperationResultVectorT opResults;
     NodeT currentNode;
+    OperationResultVectorT opResults;
 
 public:
     ExpandResult(NodeT expandedNode, OperationResultVectorT opResults) :

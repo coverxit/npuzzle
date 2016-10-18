@@ -11,7 +11,7 @@ namespace NPuzzle
     int getMisplacedTileCount(NPuzzleState state)
     {
         int count = 0;
-        for (unsigned int i = 0; i < state.size(); i++)
+        for (int i = 0; i < (int) state.size(); i++)
             if (state[i] > 0 && i + 1 != state[i]) // Not blank and misplaced
                 count++;
         return count;
@@ -21,7 +21,7 @@ namespace NPuzzle
     int getManhattanDistance(NPuzzleState state)
     {
         int distance = 0;
-        for (unsigned int i = 0; i < state.size(); i++)
+        for (int i = 0; i < (int) state.size(); i++)
         {
             if (state[i] > 0 && i + 1 != state[i]) // Not blank and misplaced
             {

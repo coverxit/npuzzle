@@ -14,7 +14,7 @@ namespace NPuzzle
         {
             // The last number in state is 0, thus only check
             // the first demonstration elements.
-            for (unsigned int i = 0; i < demonstration; i++)
+            for (int i = 0; i < demonstration; i++)
                 if (i + 1 != state[i])
                     return false;
 

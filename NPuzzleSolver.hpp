@@ -35,7 +35,6 @@ namespace NPuzzle
                 // Queuing-Function
                 [&](NPuzzleQueue queue, NPuzzleExpandResult expand) -> NPuzzleQueue 
                 {
-                    auto currentState = expand.getCurrentNode().getState();
                     auto currentDepth = expand.getCurrentNode().getDepth();
                     auto expandResult = expand.getExpandResult();
 
