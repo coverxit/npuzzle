@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
         cout << "Enter your puzzle, use a zero to represent the blank" << endl;
         for (int row = 0; row < matrixDemonstration; row++)
         {
-            cout << "Enter the row " << row + 1 << ", use space or tbs between numbers: ";
+            cout << "Enter the row " << row + 1 << ", use space or tabs between numbers: ";
             for (int col = 0; col < matrixDemonstration; col++)
                 cin >> initialState[matrixToIndex(row, col)];
         }
