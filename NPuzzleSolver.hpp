@@ -8,12 +8,12 @@ namespace NPuzzle
     private:
         // Statistic
         unsigned int totalNodesExpanded = 0;
-        unsigned int maxQueueLength = 1; // The initial state is in queue.
+        unsigned int maxQueueLength = 1; // The initial nextState is in queue.
 
         // Recored visited states
         std::map<NPuzzleState, bool> visitedState;
         // Heuristic function
-        CostFunction hFunc;
+        NPuzzleCostFunction hFunc;
 
     public:
         // g(n) = depth
@@ -23,16 +23,30 @@ namespace NPuzzle
         unsigned int getTotalNodesExpanded() const { return totalNodesExpanded; }
         unsigned int getMaxQueueLength() const { return maxQueueLength; }
 
-        CostFunction getHeuristicFunction() const { return hFunc; }
-        void setHeuristicFunction(CostFunction hFunc) { this->hFunc = hFunc; }
+        NPuzzleCostFunction getHeuristicFunction() const { return hFunc; }
+        void setHeuristicFunction(NPuzzleCostFunction hFunc) { this->hFunc = hFunc; }
 
         NPuzzleSearchResult solve(NPuzzleState initialState)
         {
             NPuzzleProblem problem(initialState);
             NPuzzleSearcher searcher(
-                // The depth of initial state is 0.
+                // The depth of initial nextState is 0.
                 [](NPuzzleState state) -> NPuzzleNode { return NPuzzleNode(state, 0); },
-                [](NPuzzleNode node) -> NPuzzleState { return node.getState(); }
+                [](NPuzzleNode node) -> NPuzzleState { return node.getState(); },
+                [&](const NPuzzleNode& a, const NPuzzleNode& b) {
+                    // The element with less f(n) has higher priority,
+                    // which actually constructs a min-heap.
+                    // (The STL heap is a max-heap default)
+                    int costA = GFunc(a) + hFunc(a);
+                    int costB = GFunc(b) + hFunc(b);
+
+                    // If we got two nodes with the same priority,
+                    // then we prefer the node with deeper depth.
+                    if (costA == costB)
+                        return GFunc(a) > GFunc(b);
+                    else // Maintain a min-heap.
+                        return costA > costB;
+                }
             );
 
             visitedState[initialState] = true;
@@ -52,30 +66,21 @@ namespace NPuzzle
                         cout << endl;
                     }
                    
-                    for (auto state : expand.getExpandedState())
+                    for (auto nextState : expand.getExpandedState())
                     {
-                        // Has this state visited?
-                        if (visitedState[state])
+                        // Has this expanded state visited?
+                        if (visitedState[nextState])
                             continue;
 
-                        // Enqueue a new node with expanded state and depth + 1
-                        queue.push_back(NPuzzleNode(state, currentNode.getDepth() + 1));
-                        // Keep it a heap
-                        std::make_heap(queue.begin(), queue.end(), 
-                            [&](const NPuzzleNode& a, const NPuzzleNode& b) {
-                                // The element with less f(n) has higher priority,
-                                // which actually constructs a min-heap.
-                                // (The STL heap is a max-heap default)
-                                return GFunc(a) + hFunc(a) > GFunc(b) + hFunc(b);
-                            }
-                        );
-
+                        // Enqueue a new node with expanded nextState and depth + 1
+                        queue.push(NPuzzleNode(nextState, currentNode.getDepth() + 1));
+    
                         // Update assoicated fields
                         totalNodesExpanded++;
-                        visitedState[state] = true;
+                        visitedState[nextState] = true;
 
-                        // Check if final state
-                        if (problem.goalTest(state))
+                        // Check if final nextState
+                        if (problem.goalTest(nextState))
                             break;
                     }
 

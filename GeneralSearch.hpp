@@ -1,4 +1,4 @@
-#ifndef __GENERAL_SERACH__
+#ifndef __GENERAL_SEARCH__
 #define __GENERAL_SEARCH__
 
 // The result of operations in a general problem with
@@ -41,7 +41,7 @@ public:
 template <class StateT, typename ExpandCostT>
 class Problem
 {
-protected:
+public:
     typedef OperationResult<StateT, ExpandCostT>    OperationResultT;
     typedef std::function<OperationResultT(StateT)> OperatorT;
 
@@ -89,6 +89,7 @@ public:
 template <class StateT, class NodeT>
 class ExpandResult
 {
+public:
     typedef std::vector<StateT> ExpandedStateVectorT;
 
 private:
@@ -110,17 +111,19 @@ template <class StateT, class NodeT, typename ExpandCostT>
 class GeneralSearcher
 {
 public:
-    // Use vector as the underlying container for an queue instead of using STL queue directly.
-    typedef std::vector<NodeT>                              QueueT;
-    typedef OperationResult<StateT, ExpandCostT>            OperationResultT;
+    // Use a custom priority queue, since it's impossible to dynamicly change 
+    // the comparison function using the one in STL.
+    typedef PriorityQueue<NodeT>                            QueueT;
+    typedef typename QueueT::ComparatorT                    QueueComparatorT;
     typedef ExpandResult<StateT, NodeT>                     ExpandResultT;
+    typedef OperationResult<StateT, ExpandCostT>            OperationResultT;
     typedef std::function<QueueT(QueueT, ExpandResultT)>    QueuingFunctionT;
     typedef SearchResult<NodeT>                             SearchResultT;
 
 private:
     typedef Problem<StateT, ExpandCostT>                    ProblemT;
-    typedef std::function<OperationResultT(StateT)>         OperatorT; 
-    typedef std::vector<StateT>                             ExpandedStateVectorT;
+    typedef typename ProblemT::OperatorT                    OperatorT;
+    typedef typename ExpandResultT::ExpandedStateVectorT    ExpandedStateVectorT;
     typedef std::function<NodeT(StateT)>                    NodeMakerT;
     typedef std::function<StateT(NodeT)>                    ToStateT;
 
@@ -128,6 +131,7 @@ private:
     // Converters between StateT and NodeT.
     NodeMakerT makeNode;
     ToStateT toState;
+    QueueComparatorT queueComparator;
 
 private:
     ExpandResultT expand(NodeT node, std::vector<OperatorT> operators)
@@ -144,24 +148,25 @@ private:
     }
 
 public:
-    GeneralSearcher(NodeMakerT makeNode, ToStateT toState)
-        : makeNode(makeNode), toState(toState) {}
+    GeneralSearcher(NodeMakerT makeNode, ToStateT toState, QueueComparatorT queueComparator)
+        : makeNode(makeNode), toState(toState), queueComparator(queueComparator) {}
 
     // function general-search(problem, QUEUEING-FUNCTION)
     SearchResultT generalSearch(ProblemT* problem, QueuingFunctionT queueingFunction)
     {
         // nodes = MAKE-QUEUE(MAKE-NODE(problem, INITIAL-STATE)
-        QueueT nodes{ makeNode(problem->getInitialState()) }; // Enqueue initial state
+        QueueT nodes(queueComparator);  
+        nodes.push(makeNode(problem->getInitialState())); // Enqueue initial state
 
         while (true)
         {
             // if EMPTY(nodes) then return "failure"
-            if (nodes.empty()) 
+            if (nodes.isEmpty()) 
                 return SearchResultT::Failure();
 
             // node = REMOVE-FRONT(nodes)
-            auto node = nodes.front();
-            nodes.erase(nodes.begin());
+            auto node = nodes.top();
+            nodes.pop();
 
             // if problem.GOTL-TEST(node.STATE) succeeds then return node
             if (problem->goalTest(toState(node)))

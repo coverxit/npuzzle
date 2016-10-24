@@ -7,6 +7,7 @@
 #include <map>
 using namespace std;
 
+#include "PriorityQueue.hpp"
 #include "GeneralSearch.hpp"
 
 #include "NPuzzleSetting.hpp"

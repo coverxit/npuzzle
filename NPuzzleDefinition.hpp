@@ -25,11 +25,11 @@ namespace NPuzzle
 
     // Some typedefs simplify definitions
     typedef GeneralSearcher<NPuzzleState, NPuzzleNode, int> NPuzzleSearcher;
-    typedef SearchResult<NPuzzleNode>                       NPuzzleSearchResult;
+    typedef NPuzzleSearcher::SearchResultT                  NPuzzleSearchResult;
     typedef NPuzzleSearcher::QueueT                         NPuzzleQueue;
     typedef NPuzzleSearcher::ExpandResultT                  NPuzzleExpandResult;
     typedef NPuzzleSearcher::OperationResultT               NPuzzleOperationResult;
-    typedef std::function<int(NPuzzleNode)>                 CostFunction; // g(n), h(n)
+    typedef std::function<int(NPuzzleNode)>                 NPuzzleCostFunction; // g(n), h(n)
 }
 
 #endif
