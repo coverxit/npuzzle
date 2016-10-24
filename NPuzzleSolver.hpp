@@ -35,14 +35,14 @@ namespace NPuzzle
          *
          * It could be NPuzzle::GetUniformHeuristicCost, NPuzzle::GetMisplacedTileCount,
          * or NPuzzle::GetManhattanDistance.
-         * @param hFunc The heuristic function to be set.
+         * \param hFunc The heuristic function to be set.
          */
         void setHeuristicFunction(NPuzzleCostFunction hFunc) { this->hFunc = hFunc; }
 
         /**
          * \brief Solve the N-Puzzle problem based on a initial state.
-         * @param initialState The intital state.
-         * @return The SearchResult indiciates whether there is a solution.
+         * \param initialState The intital state.
+         * \return The SearchResult indiciates whether there is a solution.
          */
         NPuzzleSearchResult solve(NPuzzleState initialState)
         {

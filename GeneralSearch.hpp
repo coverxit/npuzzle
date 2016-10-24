@@ -7,8 +7,8 @@
  * OperationResult could only be created by its two static creators
  * OperationResult::Failure and OperationResult::Success.
  *
- * Take 8-Puzzle as example, the StateT should be an @c std::array,
- * and the ExpandCostT should be @c int.
+ * Take 8-Puzzle as example, the StateT should be an \c std::array,
+ * and the ExpandCostT should be \c int.
  *
  * The class should represent the result of moving the blank tile
  * up, down, left and right.
@@ -60,7 +60,7 @@ public:
 /**
  * \brief A general (abstract) problem class.
  *
- * For 8-puzzle, the StateT is a @c std::array and ExpandCostT is @c int.
+ * For 8-puzzle, the StateT is a \c std::array and ExpandCostT is \c int.
  *
  * \tparam StateT The state type.
  * \tparam ExpandCostT The expanding cost type of operations.
@@ -176,8 +176,8 @@ private:
 public:
     /**
      * \brief Create a expanding result.
-     * @param expandedNode The node expanded.
-     * @param expandedStates The states expanded from the node.
+     * \param expandedNode The node expanded.
+     * \param expandedStates The states expanded from the node.
      */
     ExpandResult(NodeT expandedNode, ExpandedStateVectorT expandedStates) :
         currentNode(expandedNode), expandedStates(expandedStates) {}
@@ -274,10 +274,10 @@ private:
 
 public:
     /**
-     * @param makeNode The function converts \c StateT to \c NodeT.
-     * @param toState The function converts \c NodeT to \c StateT.
-     * @param queueComparator The comparator used in PriorityQueue.
-     * @return An instance of a class derived from GeneralSearcher.
+     * \param makeNode The function converts \c StateT to \c NodeT.
+     * \param toState The function converts \c NodeT to \c StateT.
+     * \param queueComparator The comparator used in PriorityQueue.
+     * \return An instance of a class derived from GeneralSearcher.
      */
     GeneralSearcher(NodeMakerT makeNode, ToStateT toState, QueueComparatorT queueComparator)
         : makeNode(makeNode), toState(toState), queueComparator(queueComparator) {}

@@ -45,7 +45,7 @@ public:
     PriorityQueue() : comparator(std::greater<ValueT>()) {}
     /**
      * \brief Create a priority queue with custom comparator.
-     * @param comparator The custom comparator.
+     * \param comparator The custom comparator.
      */
     PriorityQueue(ComparatorT comparator) : comparator(comparator) {}
 
@@ -56,7 +56,7 @@ public:
 
     /**
      * \brief Whether the queue is empty.
-     * @return True if empty, false if not.
+     * \return True if empty, false if not.
      */
     bool isEmpty() const { return container.empty(); }
     //! The queue size.
@@ -66,7 +66,7 @@ public:
 
     /**
      * \brief Push an element into queue.
-     * @param value The element to be pushed.
+     * \param value The element to be pushed.
      */
     void push(const ValueT& value)
     { 
