@@ -8,7 +8,7 @@ namespace NPuzzle
     private:
         // Statistic
         unsigned int totalNodesExpanded = 0;
-        unsigned int maxQueueLength = 1; // The initial nextState is in queue.
+        unsigned int maxQueueLength = 1; // The initial state is in queue.
 
         // Recored visited states
         std::map<NPuzzleState, bool> visitedState;
