@@ -131,6 +131,7 @@ private:
     // Converters between StateT and NodeT.
     NodeMakerT makeNode;
     ToStateT toState;
+    // Queue comparator.
     QueueComparatorT queueComparator;
 
 private:

@@ -30,9 +30,10 @@ namespace NPuzzle
         {
             NPuzzleProblem problem(initialState);
             NPuzzleSearcher searcher(
-                // The depth of initial nextState is 0.
+                // The depth of initial state is 0.
                 [](NPuzzleState state) -> NPuzzleNode { return NPuzzleNode(state, 0); },
                 [](NPuzzleNode node) -> NPuzzleState { return node.getState(); },
+                // The comparison function for the priority queue.
                 [&](const NPuzzleNode& a, const NPuzzleNode& b) {
                     // The element with less f(n) has higher priority,
                     // which actually constructs a min-heap.
