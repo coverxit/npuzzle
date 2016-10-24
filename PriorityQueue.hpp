@@ -19,7 +19,10 @@ private:
     ComparatorT comparator;
 
 public:
-    PriorityQueue() {}
+    // Use std::greater as the default comparator, which
+    // acutally constructs a min-heap rather than a max-heap
+    // that STL version does.
+    PriorityQueue() : comparator(std::greater<ValueT>()) {}
     PriorityQueue(ComparatorT comparator) : comparator(comparator) {}
 
     void setComparator(ComparatorT comparator) { this->comparator = comparator; }
