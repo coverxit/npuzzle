@@ -3,20 +3,20 @@
 
 namespace NPuzzle
 {
-    // Convert the index of array into a position (row, col) of matrix.
+    //! Convert the index of array into a position (row, col) of matrix.
     void indexToMatrix(int index, int& row, int& col)
     {
         row = index / matrixDemonstration;
         col = index % matrixDemonstration;
     }
 
-    // Convert a position (row, col) of matrix into the index of array.
+    //! Convert a position (row, col) of matrix into the index of array.
     int matrixToIndex(int row, int col)
     {
         return row * matrixDemonstration + col;
     }
 
-    // Helper function in printing state beautifully.
+    //! Helper function in printing state beautifully.
     void printState(NPuzzleState state)
     {
         for (int row = 0; row < matrixDemonstration; row++)

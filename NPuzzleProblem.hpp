@@ -3,13 +3,20 @@
 
 namespace NPuzzle
 {
-    // The cost type is apparently int. 
+    /**
+     * \brief The class describes the N-Puzzle problem.
+     *
+     * The \c StateT is NPuzzle::NPuzzleState and the \c ExpandCostT is \c int.
+     *
+     * \see Problem
+     */
     class NPuzzleProblem : public Problem<NPuzzleState, int>
     {
     public:
-        NPuzzleProblem(NPuzzleState initialState) : Problem(initialState) {}
+        //! Refer to \ref Problem::Problem.
+        explicit NPuzzleProblem(NPuzzleState initialState) : Problem(initialState) {}
 
-        // Test if final state achieved.
+        //! \copydoc Problem::goalTest
         bool goalTest(NPuzzleState state)
         {
             // The last number in state is 0, thus only check
@@ -21,7 +28,11 @@ namespace NPuzzle
             return true;
         }
 
-        // Operators (up, down, left, right) in N-Puzzle problem.
+        /**
+         * \copydoc Problem::getOperators
+         *
+         * In N-Puzzle problem, operators are \c up, \c down, \c left and \c right.
+         */
         std::vector<OperatorT> getOperators()
         {
             // Move up

@@ -3,31 +3,31 @@
 
 namespace NPuzzle
 {
-    // Uniform Cost Search, h(n) = 0
-    int getUniformHeuristicCost(NPuzzleNode node)
+    //! Uniform Cost Search, h(n) = 0.
+    inline int GetUniformHeuristicCost(NPuzzleNode node)
     {
         return 0;
     }
 
-    // Calculate the count of misplaced tiles
-    int getMisplacedTileCount(NPuzzleNode node)
+    //! Calculate the count of misplaced tiles.
+    inline int GetMisplacedTileCount(NPuzzleNode node)
     {
         auto state = node.getState();
         int count = 0;
 
-        for (int i = 0; i < (int) state.size(); i++)
+        for (int i = 0; i < static_cast<int>(state.size()); i++)
             if (state[i] > 0 && i + 1 != state[i]) // Not blank and misplaced
                 count++;
         return count;
     };
 
-    // Calculate Manhattan distance
-    int getManhattanDistance(NPuzzleNode node)
+    //! Calculate Manhattan distance.
+    inline int GetManhattanDistance(NPuzzleNode node)
     {
         auto state = node.getState();
         int distance = 0;
 
-        for (int i = 0; i < (int) state.size(); i++)
+        for (int i = 0; i < static_cast<int>(state.size()); i++)
         {
             if (state[i] > 0 && i + 1 != state[i]) // Not blank and misplaced
             {

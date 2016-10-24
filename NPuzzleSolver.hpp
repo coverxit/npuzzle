@@ -3,6 +3,9 @@
 
 namespace NPuzzle
 {
+    /**
+     * \brief The solver for N-Puzzle problem.
+     */
     class NPuzzleSolver
     {
     private:
@@ -10,22 +13,37 @@ namespace NPuzzle
         unsigned int totalNodesExpanded = 0;
         unsigned int maxQueueLength = 1; // The initial state is in queue.
 
-        // Recored visited states
+        // Recorded visited states
         std::map<NPuzzleState, bool> visitedState;
         // Heuristic function
         NPuzzleCostFunction hFunc;
 
     public:
-        // g(n) = depth
+        //! In N-Puzzle problem, g(n) = depth.
         static int GFunc(NPuzzleNode node) { return node.getDepth(); }
 
     public:
+        //! Get the total amount of nodes expanded.
         unsigned int getTotalNodesExpanded() const { return totalNodesExpanded; }
+        //! Get the max length of the search queue.
         unsigned int getMaxQueueLength() const { return maxQueueLength; }
 
+        //! Get the heuristic function (\c g(n)).
         NPuzzleCostFunction getHeuristicFunction() const { return hFunc; }
+        /**
+         * \brief Set the heuristic function (\c g(n)).
+         *
+         * It could be NPuzzle::GetUniformHeuristicCost, NPuzzle::GetMisplacedTileCount,
+         * or NPuzzle::GetManhattanDistance.
+         * @param hFunc The heuristic function to be set.
+         */
         void setHeuristicFunction(NPuzzleCostFunction hFunc) { this->hFunc = hFunc; }
 
+        /**
+         * \brief Solve the N-Puzzle problem based on a initial state.
+         * @param initialState The intital state.
+         * @return The SearchResult indiciates whether there is a solution.
+         */
         NPuzzleSearchResult solve(NPuzzleState initialState)
         {
             NPuzzleProblem problem(initialState);
@@ -76,7 +94,7 @@ namespace NPuzzle
                         // Enqueue a new node with expanded nextState and depth + 1
                         queue.push(NPuzzleNode(nextState, currentNode.getDepth() + 1));
     
-                        // Update assoicated fields
+                        // Update associated fields
                         totalNodesExpanded++;
                         visitedState[nextState] = true;
 

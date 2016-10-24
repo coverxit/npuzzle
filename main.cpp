@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
     NPuzzleSolver solver;
 
     cout << "Welcome to Renjie Wu's " << demonstration << "-puzzle solver." << endl;
-    cout << "Type \"1\" to use a defualt puzzle, or \"2\" to enter your own puzzle." << endl;
+    cout << "Type \"1\" to use a default puzzle, or \"2\" to enter your own puzzle." << endl;
     cin >> selection;
     if (selection == 2)
     {
@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
     cout << "Enter your choice of algorithm:" << endl;
     cout << "  1. Uniform Cost Search." << endl;
     cout << "  2. A* with the Misplaced Tile heuristic." << endl;
-    cout << "  3. A* with the Manhattan distance heurisitic." << endl;
+    cout << "  3. A* with the Manhattan distance heuristic." << endl;
     cin >> selection;
     cout << endl;
 
@@ -57,16 +57,16 @@ int main(int argc, char* argv[])
     switch (selection)
     {
     case 1: // Uniform Cost Search
-        solver.setHeuristicFunction(getUniformHeuristicCost);
+        solver.setHeuristicFunction(GetUniformHeuristicCost);
         break;
 
     case 2: // A* with Misplaced Tile
-        solver.setHeuristicFunction(getMisplacedTileCount);
+        solver.setHeuristicFunction(GetMisplacedTileCount);
         break;
 
     case 3: // A* with Manhattan distance
     default:
-        solver.setHeuristicFunction(getManhattanDistance);
+        solver.setHeuristicFunction(GetManhattanDistance);
         break;
     }
 
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
     else
     {
         cout << "Goal!!" << endl << endl;
-        cout << "To solve this problem, the search alogrithm expanded a total of ";
+        cout << "To solve this problem, the search algorithm expanded a total of ";
         cout << solver.getTotalNodesExpanded() << " nodes." << endl;
         cout << "The maximum number of nodes in the queue at any one time was ";
         cout << solver.getMaxQueueLength() << "." << endl;
