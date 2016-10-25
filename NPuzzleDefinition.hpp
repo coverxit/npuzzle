@@ -1,7 +1,15 @@
+/**
+ * \file NPuzzleDefinition.hpp
+ * \brief Structs and typedefs for the N-Puzzle problem.
+ *
+ * Such as the state NPuzzle::NPuzzleState used in the problem,
+ * the queue node NPuzzle::NPuzzleNode used in the searcher, and
+ * a template-generalized GeneralSearcher class NPuzzle::NPuzzleSearcher.
+ */
 #ifndef __NPUZZLE_DEFINITION__
 #define __NPUZZLE_DEFINITION__
 
-//! N-Puzzle problem namespace
+//! The N-Puzzle problem namespace
 namespace NPuzzle
 {
     //! The state was sotored in a \c std::array.

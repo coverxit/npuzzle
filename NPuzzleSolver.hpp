@@ -1,3 +1,12 @@
+/**
+ * \file NPuzzleSolver.hpp
+ * \brief The solver for N-Puzzle problem.
+ *
+ * The solver would record the total amount of nodes expanded
+ * and the max length of the search queue.
+ *
+ * It's actually a composition class for an NPuzzle::NPuzzleSearcher.
+ */
 #ifndef __NPUZZLE_SOLVER__
 #define __NPUZZLE_SOLVER__
 
@@ -44,6 +53,7 @@ namespace NPuzzle
          * \param initialState The intital state.
          * \return The SearchResult indiciates whether there is a solution.
          */
+
         NPuzzleSearchResult solve(NPuzzleState initialState)
         {
             NPuzzleProblem problem(initialState);

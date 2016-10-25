@@ -1,3 +1,7 @@
+/**
+ * \file NPuzzleSetting.hpp
+ * \brief Define the demonstration and moving cost for the N-Puzzle problem.
+ */
 #ifndef __NPUZZLE_SETTING__
 #define __NPUZZLE_SETTING__
 

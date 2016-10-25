@@ -1,3 +1,7 @@
+/**
+ * \file NPuzzleUtility.hpp
+ * \brief Helper functions for simplifying operations.
+ */
 #ifndef __NPUZZLE_UTILITY__
 #define __NPUZZLE_UTILITY__
 

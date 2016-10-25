@@ -1,3 +1,12 @@
+/**
+ * \file NPuzzleHeuristicFunction.hpp
+ * \brief The heuristic functions \c h(n) for the N-Puzzle problem.
+ *
+ * Contains three heuristic functions:
+ * - NPuzzle::GetUniformHeuristicCost, for Uniform Cost Search.
+ * - NPuzzle::GetMisplacedTileCount, for A* with Misplaced tiles.
+ * - NPuzzle::GetManhattanDistance, for A* with Manhattan distance.
+ */
 #ifndef __NPUZZLE_HEURISTIC_FUNCTION__
 #define __NPUZZLE_HEURISTIC_FUNCTION__
 

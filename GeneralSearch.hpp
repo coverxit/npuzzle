@@ -1,3 +1,7 @@
+/**
+ * \file GeneralSearch.hpp
+ * \brief The classes to define a (abstract) general searcher.
+ */
 #ifndef __GENERAL_SEARCH__
 #define __GENERAL_SEARCH__
 
@@ -7,8 +11,8 @@
  * OperationResult could only be created by its two static creators
  * OperationResult::Failure and OperationResult::Success.
  *
- * Take 8-Puzzle as example, the StateT should be an \c std::array,
- * and the ExpandCostT should be \c int.
+ * Take 8-Puzzle as example, the \c StateT should be an \c std::array,
+ * and the \c ExpandCostT should be \c int.
  *
  * The class should represent the result of moving the blank tile
  * up, down, left and right.
@@ -60,7 +64,7 @@ public:
 /**
  * \brief A general (abstract) problem class.
  *
- * For 8-puzzle, the StateT is a \c std::array and ExpandCostT is \c int.
+ * For 8-puzzle, the \c StateT is a \c std::array and \c ExpandCostT is \c int.
  *
  * \tparam StateT The state type.
  * \tparam ExpandCostT The expanding cost type of operations.
@@ -72,6 +76,7 @@ public:
     typedef OperationResult<StateT, ExpandCostT>    OperationResultT;
     /**
      * \brief The operation function type.
+     *
      * It should be the following form:
      * \code
      * OperationResult<StateT, ExpandCostT> operation(StateT state)

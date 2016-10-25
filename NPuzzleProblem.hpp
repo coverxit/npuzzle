@@ -1,3 +1,7 @@
+/**
+ * \file NPuzzleProblem.hpp
+ * \brief The concrete Problem class NPuzzle::NPuzzleProblem for the N-Puzzle problem.
+ */
 #ifndef __NPUZZLE_PROBLEM__
 #define __NPUZZLE_PROBLEM__
 

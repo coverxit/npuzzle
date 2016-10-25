@@ -1,3 +1,7 @@
+/**
+ * \file PriorityQueue.hpp
+ * \brief A priority queue based on \c std::vector.
+ */
 #ifndef __PRIORITY_QUEUE__
 #define __PRIORITY_QUEUE__
 
