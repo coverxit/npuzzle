@@ -7,13 +7,13 @@
 
 namespace NPuzzle
 {
-    //! The n-puzzle demonstration, could be change to 15, 25, etc.
+    //! The n-puzzle demonstration, default 8, could be change to 15, etc.
     constexpr int demonstration = 8;
-    //! The cost of every operation (up, down, left, right) on blank
+    //! The cost of every operation (up, down, left, right) on the blank tile.
     constexpr int moveCost = 1;
     /**
      * \brief An n-puzzle demonstration would generate a \c AxA matrix,
-     * where A equals to <tt>sqrt(demonstration + 1)</tt>.
+     * where \c A equals to <tt>sqrt(demonstration + 1)</tt>.
      */
     const int matrixDemonstration = (int)sqrt(demonstration + 1);
 }

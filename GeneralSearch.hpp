@@ -7,6 +7,8 @@
 
 /**
  * \brief The result of operations in a general problem.
+ * \tparam StateT The state type used in a Problem.
+ * \tparam ExpandCostT The expanding cost type used in a Problem.
  *
  * OperationResult could only be created by its two static creators
  * OperationResult::Failure and OperationResult::Success.
@@ -16,9 +18,6 @@
  *
  * The class should represent the result of moving the blank tile
  * up, down, left and right.
- *
- * \tparam StateT The state type used in a Problem
- * \tparam ExpandCostT The expanding cost type used in a Problem
  */
 template <class StateT, typename ExpandCostT>
 class OperationResult
@@ -62,12 +61,11 @@ public:
 };
 
 /**
- * \brief A general (abstract) problem class.
- *
- * For 8-puzzle, the \c StateT is a \c std::array and \c ExpandCostT is \c int.
- *
+ * \brief The general (abstract) problem class.
  * \tparam StateT The state type.
  * \tparam ExpandCostT The expanding cost type of operations.
+ *
+ * For 8-puzzle, the \c StateT is \c std::array and \c ExpandCostT is \c int.
  */
 template <class StateT, typename ExpandCostT>
 class Problem
@@ -119,13 +117,12 @@ public:
 
 /**
  * \brief The result of a general search.
+ * \tparam NodeT The node type used in a PriorityQueue.
  *
  * It stores the final node with queue node type \c NodeT.
  *
  * SearchResult could only be created by its static creators
  * SearchResult::Failure and SearchResult::Success.
- *
- * \tparam NodeT The node type used in a PriorityQueue.
  */
 template <class NodeT>
 class SearchResult
@@ -162,11 +159,10 @@ public:
 
 /**
  * \brief The result of expanding a node in the queue.
- *
- * For 8-puzzle, the \c StateT is a \c std::array.
- *
  * \tparam StateT The state type used in a Problem.
  * \tparam NodeT The node type used in a GeneralSearcher.
+ *
+ * For 8-puzzle, the \c StateT is \c std::array.
  */
 template <class StateT, class NodeT>
 class ExpandResult
@@ -194,13 +190,12 @@ public:
 };
 
 /**
- * \brief The general searcher
- *
- * For 8-puzzle, the \c StateT is \c std::array, the \c ExpandCostT is \c int.
- *
+ * \brief The general (abstract) searcher.
  * \tparam StateT The state type used in a Problem.
  * \tparam NodeT The node type used in a PriorityQueue.
  * \tparam ExpandCostT The expanding cost type used in a Problem.
+ *
+ * For 8-puzzle, the \c StateT is \c std::array, the \c ExpandCostT is \c int.
  */
 template <class StateT, class NodeT, typename ExpandCostT>
 class GeneralSearcher

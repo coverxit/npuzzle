@@ -12,7 +12,7 @@
 //! The N-Puzzle problem namespace
 namespace NPuzzle
 {
-    //! The state was sotored in a \c std::array.
+    //! The state was stored in a \c std::array.
     typedef std::array<int, demonstration + 1> NPuzzleState;
 
     //! The node used in search queue.
@@ -22,7 +22,7 @@ namespace NPuzzle
         int depth;
 
     public:
-        NPuzzleNode() : depth(-1) {} // -1 represents failure.
+        NPuzzleNode() : depth(-1) {}
 
         /**
          * \param state The state to be stored in node.

@@ -7,11 +7,13 @@
 
 /**
  * \brief A priority queue based on \c std::vector, using STL heap to maintain it.
+ * \tparam ValueT The value type to be used in queue.
  *
  * Supports changing comparison function dynamically,
  * which is not supported by the STL version.
  *
- * \tparam ValueT The value type to be used in queue.
+ * It actually constructs a min-heap rather than
+ * a max-heap that STL version does.
  */
 template <class ValueT>
 class PriorityQueue
@@ -42,9 +44,6 @@ public:
     /**
      * \brief Create a priority queue using \c std::greater
      * as the default comparator.
-     *
-     * It actually constructs a min-heap rather than
-     * a max-heap that STL version does.
      */
     PriorityQueue() : comparator(std::greater<ValueT>()) {}
     /**
