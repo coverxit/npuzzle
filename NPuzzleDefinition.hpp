@@ -17,12 +17,16 @@ namespace NPuzzle
 
     //! The node used in search queue.
     class NPuzzleNode {
+    public:
+        //! Use -1 to indicate no solution.
+        static constexpr int FailureDepth = -1;
+
     private:
         NPuzzleState state;
         int depth;
 
     public:
-        NPuzzleNode() : depth(-1) {}
+        NPuzzleNode() : depth(FailureDepth) {}
 
         /**
          * \param state The state to be stored in node.
@@ -40,6 +44,15 @@ namespace NPuzzle
         int getDepth() const { return depth; }
         //! Set the expanded depth of this node.
         void setDepth(int depth) { this->depth = depth; }
+
+        //! Override operator < for std::map, used in NPuzzleSolver.
+        bool operator<(const NPuzzleNode& rhs) const
+        {
+            if (depth != rhs.depth)
+                return depth < rhs.depth;
+            else
+                return state < rhs.state;
+        }
     };
 
     /**

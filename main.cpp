@@ -79,6 +79,23 @@ int main(int argc, char* argv[])
         cout << "No solution!" << endl;
     else
     {
+        auto path = solver.getSolutionPath();
+        auto gFunc = NPuzzleSolver::GFunc;
+        auto hFunc = solver.getHeuristicFunction();
+
+        for (auto& node : path)
+        {
+            // Print expanding information
+            if (node.getState() != initialState)
+            {
+                cout << "The best state to expand with a g(n) = " << gFunc(node);
+                cout << " and h(n) = " << hFunc(node) << " is..." << endl;
+                printState(node.getState());
+                cout << "Expanding this node..." << endl;
+                cout << endl;
+            }
+        }
+
         cout << "Goal!!" << endl << endl;
         cout << "To solve this problem, the search algorithm expanded a total of ";
         cout << solver.getTotalNodesExpanded() << " nodes." << endl;

@@ -14,6 +14,8 @@ namespace NPuzzle
 {
     /**
      * \brief The solver for N-Puzzle problem.
+     *
+     *  It's actually a composition class for an NPuzzle::NPuzzleSearcher.
      */
     class NPuzzleSolver
     {
@@ -22,10 +24,15 @@ namespace NPuzzle
         unsigned int totalNodesExpanded = 0;
         unsigned int maxQueueLength = 1; // The initial state is in queue.
 
-        // Recorded visited states
+        // Record visited states
         std::map<NPuzzleState, bool> visitedState;
         // Heuristic function
         NPuzzleCostFunction hFunc;
+
+        // Mapping from the expanding nodes to the node expanded.
+        std::map<NPuzzleNode, NPuzzleNode> expandMapping;
+        // Record the final node for trace path
+        NPuzzleNode finalNode;
 
     public:
         //! In N-Puzzle problem, g(n) = depth.
@@ -41,21 +48,50 @@ namespace NPuzzle
         NPuzzleCostFunction getHeuristicFunction() const { return hFunc; }
         /**
          * \brief Set the heuristic function (\c g(n)).
-         *
-         * It could be NPuzzle::GetUniformHeuristicCost, NPuzzle::GetMisplacedTileCount,
-         * or NPuzzle::GetManhattanDistance.
          * \param hFunc The heuristic function to be set.
+         *
+         * \c hFunc could be NPuzzle::GetUniformHeuristicCost, NPuzzle::GetMisplacedTileCount,
+         * or NPuzzle::GetManhattanDistance.
          */
         void setHeuristicFunction(NPuzzleCostFunction hFunc) { this->hFunc = hFunc; }
+
+        //! Get the path to solution if exists. The path starts with the initial state.
+        std::vector<NPuzzleNode> getSolutionPath()
+        {
+            std::vector<NPuzzleNode> path;
+
+            // Last search is failed?
+            if (finalNode.getDepth() == NPuzzleNode::FailureDepth)
+                return std::vector<NPuzzleNode>();
+
+            auto currentNode = finalNode;
+            // The initialNode is mapped to a node with FailureDepth,
+            // so it is used as the termination condition.
+            while (expandMapping[currentNode].getDepth() != NPuzzleNode::FailureDepth)
+            {
+                path.push_back(expandMapping[currentNode]);
+                currentNode = expandMapping[currentNode];
+            }
+
+            // The path now is in reverse order, so we reverse it back.
+            std::reverse(path.begin(), path.end());
+            return path;
+        }
 
         /**
          * \brief Solve the N-Puzzle problem based on a initial state.
          * \param initialState The intital state.
          * \return The SearchResult indiciates whether there is a solution.
          */
-
         NPuzzleSearchResult solve(NPuzzleState initialState)
         {
+            // Clear the information last search left.
+            visitedState.clear();
+            expandMapping.clear();
+            totalNodesExpanded = 0;
+            maxQueueLength = 1;
+
+            // Constructs problem and searcher.
             NPuzzleProblem problem(initialState);
             NPuzzleSearcher searcher(
                 // The depth of initial state is 0.
@@ -84,16 +120,6 @@ namespace NPuzzle
                 [&](NPuzzleQueue queue, NPuzzleExpandResult expand) -> NPuzzleQueue 
                 {
                     auto currentNode = expand.getCurrentNode();
-
-                    // Print expanding information
-                    if (currentNode.getState() != initialState)
-                    {
-                        cout << "The best state to expand with a g(n) = " << GFunc(currentNode);
-                        cout << " and h(n) = " << hFunc(currentNode) << " is..." << endl;
-                        printState(currentNode.getState());
-                        cout << "Expanding this node..." << endl;
-                        cout << endl;
-                    }
                    
                     for (auto nextState : expand.getExpandedState())
                     {
@@ -102,7 +128,10 @@ namespace NPuzzle
                             continue;
 
                         // Enqueue a new node with expanded nextState and depth + 1
-                        queue.push(NPuzzleNode(nextState, currentNode.getDepth() + 1));
+                        auto newNode = NPuzzleNode(nextState, currentNode.getDepth() + 1);
+                        queue.push(newNode);
+                        // Mapping the new node to its parent node.
+                        expandMapping[newNode] = currentNode;
     
                         // Update associated fields
                         totalNodesExpanded++;
@@ -120,7 +149,9 @@ namespace NPuzzle
                     return queue;
                 }
             );
-            
+
+            // Set finalNode for later path tracing
+            finalNode = result.getFinalNode();
             return result;
         }
     };
