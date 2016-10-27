@@ -29,7 +29,7 @@ namespace NPuzzle
         // Heuristic function
         NPuzzleCostFunction hFunc;
 
-        // Mapping from the expanding nodes to the node expanded.
+        // Mapping from the children node to its parent node, used in tracing path
         std::map<NPuzzleNode, NPuzzleNode> expandMapping;
         // Record the final node for trace path
         NPuzzleNode finalNode;
