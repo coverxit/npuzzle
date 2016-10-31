@@ -106,7 +106,7 @@ namespace NPuzzle
                     int costB = GFunc(b) + hFunc(b);
 
                     // If we got two nodes with the same priority,
-                    // then we prefer the node with deeper depth.
+                    // then we prefer the node with shallower depth.
                     if (costA == costB)
                         return GFunc(a) > GFunc(b);
                     else // Maintain a min-heap.
