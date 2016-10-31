@@ -215,3 +215,7 @@ ModelManifest.xml
 # Visual Studio Project files
 *.sln
 *.vcxproj*
+
+# IDEA
+CMakeLists.txt
+.idea
