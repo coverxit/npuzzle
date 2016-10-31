@@ -3,7 +3,7 @@ BINDIR = bin
 EXECUTABLE = NPuzzleSolver
 
 CC = g++
-CFLAGS = -c -std=c++11
+CFLAGS = -c -std=c++0x
 LDFLAGS = 
 
 TARGET = $(BINDIR)/$(EXECUTABLE)
