@@ -15,7 +15,7 @@ namespace NPuzzle
      * \brief An n-puzzle demonstration would generate a \c AxA matrix,
      * where \c A equals to <tt>sqrt(demonstration + 1)</tt>.
      */
-    const int matrixDemonstration = (int)sqrt(demonstration + 1);
+    const int matrixDemonstration = static_cast<int>(sqrt(demonstration + 1));
 }
 
 #endif
