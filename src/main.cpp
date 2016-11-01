@@ -24,6 +24,7 @@ int main(int argc, char* argv[])
 
     // NPuzzleState initialState{ 1, 5, 3, 4, 0, 6, 7, 2, 8 };
     NPuzzleState initialState{ 1, 2, 3, 4, 8, 0, 7, 6, 5 };
+    NPuzzleState finalState{ 1, 2, 3, 4, 5, 6, 7, 8, 0 };
     NPuzzleSolver solver;
 
     cout << "Welcome to Renjie Wu's " << demonstration << "-puzzle solver." << endl;
@@ -43,6 +44,25 @@ int main(int argc, char* argv[])
     {
         cout << "Using default puzzle:" << endl;
         printState(initialState);
+    }
+    cout << endl;
+
+    cout << "Type \"1\" to use a default goal state, or \"2\" to enter your own goal state." << endl;
+    cin >> selection;
+    if (selection == 2)
+    {
+        cout << "Enter your goal state, use a zero to represent the blank" << endl;
+        for (int row = 0; row < matrixDemonstration; row++)
+        {
+            cout << "Enter the row " << row + 1 << ", use space or tabs between numbers: ";
+            for (int col = 0; col < matrixDemonstration; col++)
+                cin >> finalState[matrixToIndex(row, col)];
+        }
+    }
+    else
+    {
+        cout << "Using default goal state:" << endl;
+        printState(finalState);
     }
     cout << endl;
 
@@ -74,7 +94,7 @@ int main(int argc, char* argv[])
     printState(initialState);
     cout << endl;
 
-    auto result = solver.solve(initialState);
+    auto result = solver.solve(initialState, finalState);
     if (!result.isSucceeded())
         cout << "No solution!" << endl;
     else

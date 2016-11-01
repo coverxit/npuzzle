@@ -44,10 +44,10 @@ namespace NPuzzle
         //! Get the max length of the search queue.
         unsigned int getMaxQueueLength() const { return maxQueueLength; }
 
-        //! Get the heuristic function (\c g(n)).
+        //! Get the heuristic function (\c h(n)).
         NPuzzleCostFunction getHeuristicFunction() const { return hFunc; }
         /**
-         * \brief Set the heuristic function (\c g(n)).
+         * \brief Set the heuristic function (\c h(n)).
          * \param hFunc The heuristic function to be set.
          *
          * \c hFunc could be NPuzzle::GetUniformHeuristicCost, NPuzzle::GetMisplacedTileCount,
@@ -83,7 +83,7 @@ namespace NPuzzle
          * \param initialState The intital state.
          * \return The SearchResult indiciates whether there is a solution.
          */
-        NPuzzleSearchResult solve(NPuzzleState initialState)
+        NPuzzleSearchResult solve(NPuzzleState initialState, NPuzzleState finalState)
         {
             // Clear the information last search left.
             visitedState.clear();
@@ -92,7 +92,7 @@ namespace NPuzzle
             maxQueueLength = 1;
 
             // Constructs problem and searcher.
-            NPuzzleProblem problem(initialState);
+            NPuzzleProblem problem(initialState, finalState);
             NPuzzleSearcher searcher(
                 // The depth of initial state is 0.
                 [](NPuzzleState state) -> NPuzzleNode { return NPuzzleNode(state, 0); },

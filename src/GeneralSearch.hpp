@@ -85,7 +85,7 @@ public:
      */
     typedef std::function<OperationResultT(StateT)> OperatorT;
 
-private:
+protected:
     StateT initialState;
 
 public:

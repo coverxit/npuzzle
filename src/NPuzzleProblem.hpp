@@ -16,20 +16,21 @@ namespace NPuzzle
      */
     class NPuzzleProblem : public Problem<NPuzzleState, int>
     {
+    private:
+        NPuzzleState finalState;
+
     public:
-        //! Refer to \ref Problem::Problem.
-        explicit NPuzzleProblem(NPuzzleState initialState) : Problem(initialState) {}
+        /**
+         * \param initialState The initial state.
+         * \param finalState The final state. 
+         */
+        explicit NPuzzleProblem(NPuzzleState initialState, NPuzzleState finalState) 
+            : Problem(initialState), finalState(finalState) {}
 
         //! \copydoc Problem::goalTest
         bool goalTest(NPuzzleState state)
         {
-            // The last number in state is 0, thus only check
-            // the first demonstration elements.
-            for (int i = 0; i < demonstration; i++)
-                if (i + 1 != state[i])
-                    return false;
-
-            return true;
+            return finalState == state;
         }
 
         /**
