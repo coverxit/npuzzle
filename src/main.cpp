@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 {
     int selection;
 
-    NPuzzleState initialState{ 4, 2, 8, 6, 0, 3, 7, 5, 1 };
+    NPuzzleState initialState{ 8, 6, 7, 2, 5, 4, 3, 0, 1 };
     NPuzzleState finalState{ 1, 2, 3, 4, 5, 6, 7, 8, 0 };
     NPuzzleSolver solver;
 
