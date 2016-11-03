@@ -8,6 +8,7 @@
 namespace NPuzzle
 {
     //! The n-puzzle demonstration, default 8, could be change to 15, etc.
+    // However, A* is too slow for 15. IDA* should be applied.
     constexpr int demonstration = 8;
     //! The cost of every operation (up, down, left, right) on the blank tile.
     constexpr int moveCost = 1;

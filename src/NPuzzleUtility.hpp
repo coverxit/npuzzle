@@ -30,6 +30,43 @@ namespace NPuzzle
             cout << endl;
         }
     }
+
+    //! Count inversions in a given state.
+    int countInversions(NPuzzleState state)
+    {
+        int count = 0;
+        for (int i = 0; i < demonstration; i++)
+            for (int j = i + 1; j <= demonstration; j++)
+                // 0 is blank tile.
+                if (state[i] && state[j] && state[i] > state[j])
+                    count++;
+        return count;
+    }
+
+    //! Helpr function for checking solvability.
+    bool isSolvable(NPuzzleState state)
+    {
+        if (matrixDemonstration % 2)
+        {
+            // If the grid width is odd, the number of inversions in solvable
+            // state should be even.
+            return countInversions(state) % 2 == 0;
+        }
+        else
+        {
+            // For a even grid, if the blank on an even row counting from the bottom,
+            // then the number of inversions in solvable state should be odd.
+            // Otherwise, if the blank on an odd row, the number of inversions should be even.
+            int row, col;
+            int blank = std::find(state.begin(), state.end(), 0) - state.begin();
+            indexToMatrix(blank, row, col);
+
+            if ((matrixDemonstration - row) % 2 == 0)   // even blank
+                return countInversions(state) % 2 != 0; // odd inversions
+            else                                        // odd blank
+                return countInversions(state) % 2 == 0; // even inversions
+        }
+    }
 }
 
 #endif

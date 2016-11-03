@@ -46,6 +46,16 @@ int main(int argc, char* argv[])
     }
     cout << endl;
 
+    if (!isSolvable(initialState))
+    {
+        cout << "The initial configuration is unsolvable under the default goal state." << endl;
+        cout << "Type \"1\" to exit the solver, or \"2\" to continue anyway." << endl;
+        cin >> selection;
+
+        if (selection == 1) return 0;
+        else cout << endl;
+    }
+
     cout << "Type \"1\" to use a default goal state, or \"2\" to enter your own goal state." << endl;
     cin >> selection;
     if (selection == 2)
@@ -116,13 +126,17 @@ int main(int argc, char* argv[])
         }
 
         cout << "Goal!!" << endl << endl;
-        cout << "To solve this problem, the search algorithm expanded a total of ";
-        cout << solver.getTotalNodesExpanded() << " nodes." << endl;
-        cout << "The maximum number of nodes in the queue at any one time was ";
-        cout << solver.getMaxQueueLength() << "." << endl;
+    }
+
+    cout << "To solve this problem, the search algorithm expanded a total of ";
+    cout << solver.getTotalNodesExpanded() << " nodes." << endl;
+    cout << "The maximum number of nodes in the queue at any one time was ";
+    cout << solver.getMaxQueueLength() << "." << endl;
+
+    if (result.isSucceeded())
+    {
         cout << "The depth of the goal node was ";
         cout << result.getFinalNode().getDepth() << "." << endl;
     }
-
     return 0;
 }
