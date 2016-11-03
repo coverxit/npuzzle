@@ -5,6 +5,7 @@
 #include <vector>
 #include <functional>
 #include <map>
+#include <chrono>
 using namespace std;
 
 #include "PriorityQueue.hpp"
@@ -103,7 +104,11 @@ int main(int argc, char* argv[])
     printState(initialState);
     cout << endl;
 
+    // Code timing
+    auto startTime = chrono::steady_clock::now();
     auto result = solver.solve(initialState, finalState);
+    auto endTime = chrono::steady_clock::now();
+
     if (!result.isSucceeded())
         cout << "No solution!" << endl;
     else
@@ -138,5 +143,9 @@ int main(int argc, char* argv[])
         cout << "The depth of the goal node was ";
         cout << result.getFinalNode().getDepth() << "." << endl;
     }
+
+    cout << "The time elapsed during search is ";
+    cout << chrono::duration<double>(endTime - startTime).count();
+    cout << " s." << endl;
     return 0;
 }
