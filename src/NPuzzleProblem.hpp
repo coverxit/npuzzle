@@ -51,7 +51,7 @@ namespace NPuzzle
 
             // Find blank position.
             int row, col;
-            int blank = std::find(state.begin(), state.end(), 0) - state.begin();
+            auto blank = std::find(state.begin(), state.end(), 0) - state.begin();
             indexToMatrix(blank, row, col);
 
             if (col - 1 >= 0) // check boundary
@@ -70,7 +70,7 @@ namespace NPuzzle
 
             // Find blank position.
             int row, col;
-            int blank = std::find(state.begin(), state.end(), 0) - state.begin();
+            auto blank = std::find(state.begin(), state.end(), 0) - state.begin();
             indexToMatrix(blank, row, col);
 
             if (col + 1 < matrixDemonstration) // check boundary
@@ -89,7 +89,7 @@ namespace NPuzzle
 
             // Find blank position.
             int row, col;
-            int blank = std::find(state.begin(), state.end(), 0) - state.begin();
+            auto blank = std::find(state.begin(), state.end(), 0) - state.begin();
             indexToMatrix(blank, row, col);
 
             if (row - 1 >= 0) // check boundary
@@ -108,7 +108,7 @@ namespace NPuzzle
 
             // Find blank position.
             int row, col;
-            int blank = std::find(state.begin(), state.end(), 0) - state.begin();
+            auto blank = std::find(state.begin(), state.end(), 0) - state.begin();
             indexToMatrix(blank, row, col);
 
             if (row + 1 < matrixDemonstration) // check boundary

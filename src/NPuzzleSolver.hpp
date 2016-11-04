@@ -21,8 +21,8 @@ namespace NPuzzle
     {
     private:
         // Statistic
-        unsigned int totalNodesExpanded = 0;
-        unsigned int maxQueueLength = 1; // The initial state is in queue.
+        unsigned long totalNodesExpanded = 0;
+        unsigned long maxQueueLength = 1; // The initial state is in queue.
 
         // Record visited states, use hash(state) as the key.
         std::unordered_set<std::size_t> visitedState;
@@ -40,9 +40,9 @@ namespace NPuzzle
 
     public:
         //! Get the total amount of nodes expanded.
-        unsigned int getTotalNodesExpanded() const { return totalNodesExpanded; }
+        unsigned long getTotalNodesExpanded() const { return totalNodesExpanded; }
         //! Get the max length of the search queue.
-        unsigned int getMaxQueueLength() const { return maxQueueLength; }
+        unsigned long getMaxQueueLength() const { return maxQueueLength; }
 
         //! Get the heuristic function (\c h(n)).
         NPuzzleCostFunction getHeuristicFunction() const { return hFunc; }

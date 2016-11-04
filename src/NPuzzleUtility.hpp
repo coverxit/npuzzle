@@ -8,14 +8,14 @@
 namespace NPuzzle
 {
     //! Convert the index of array into a position (row, col) of matrix.
-    void indexToMatrix(int index, int& row, int& col)
+    void indexToMatrix(long index, int& row, int& col)
     {
-        row = index / matrixDemonstration;
-        col = index % matrixDemonstration;
+        row = static_cast<int>(index / matrixDemonstration);
+        col = static_cast<int>(index % matrixDemonstration);
     }
 
     //! Convert a position (row, col) of matrix into the index of array.
-    int matrixToIndex(int row, int col)
+    long matrixToIndex(int row, int col)
     {
         return row * matrixDemonstration + col;
     }
@@ -44,17 +44,21 @@ namespace NPuzzle
     }
 
     //! Helper function for checking solvability.
-    bool isSolvable(NPuzzleState state) {
-        if (matrixDemonstration % 2) {
+    bool isSolvable(NPuzzleState state)
+    {
+        if (matrixDemonstration % 2)
+        {
             // If the grid width is odd, the number of inversions in solvable
             // state should be even.
             return countInversions(state) % 2 == 0;
-        } else {
+        }
+        else
+        {
             // For a even grid, if the blank on an even row counting from the bottom,
             // then the number of inversions in solvable state should be odd.
             // Otherwise, if the blank on an odd row, the number of inversions should be even.
             int row, col;
-            int blank = std::find(state.begin(), state.end(), 0) - state.begin();
+            auto blank = std::find(state.begin(), state.end(), 0) - state.begin();
             indexToMatrix(blank, row, col);
 
             if ((matrixDemonstration - row) % 2 == 0)   // even blank
