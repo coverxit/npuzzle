@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['indextomatrix',['indexToMatrix',['../namespace_n_puzzle.html#a6bc1d43df14bf169c99aa5ea797243c4',1,'NPuzzle']]],
-  ['isempty',['isEmpty',['../class_priority_queue.html#a3969532d0dc885b0cc69c028637b93f0',1,'PriorityQueue']]],
-  ['issolvable',['isSolvable',['../namespace_n_puzzle.html#a4b43a242c57b7f920bbd863fac4fe0fc',1,'NPuzzle']]],
-  ['issucceeded',['isSucceeded',['../class_operation_result.html#a539a66bcc4443d6dcf565c5f693f09e0',1,'OperationResult::isSucceeded()'],['../class_search_result.html#a8066d3c995b003243388b6f31db54310',1,'SearchResult::isSucceeded()']]]
+  ['hash_3c_20npuzzle_3a_3anpuzzlenode_20_3e',['hash&lt; NPuzzle::NPuzzleNode &gt;',['../structstd_1_1hash_3_01_n_puzzle_1_1_n_puzzle_node_01_4.html',1,'std']]],
+  ['hash_3c_20npuzzle_3a_3anpuzzlestate_20_3e',['hash&lt; NPuzzle::NPuzzleState &gt;',['../structstd_1_1hash_3_01_n_puzzle_1_1_n_puzzle_state_01_4.html',1,'std']]]
 ];

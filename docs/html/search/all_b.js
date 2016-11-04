@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['run',['Run',['../class_code_timing.html#afb917b4a7acefd972543ae43551c8cbe',1,'CodeTiming']]],
-  ['runvoid',['RunVoid',['../class_code_timing.html#a26f8acb38425de5c73719a34851a7f62',1,'CodeTiming']]]
+  ['queuecomparatort',['QueueComparatorT',['../class_general_searcher.html#a79146e5f7d506368cfd32773dc6c8056',1,'GeneralSearcher']]],
+  ['queuingfunctiont',['QueuingFunctionT',['../class_general_searcher.html#a124d5157ea988698bce9b357b2357160',1,'GeneralSearcher']]]
 ];
