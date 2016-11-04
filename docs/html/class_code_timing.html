@@ -78,6 +78,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:afb917b4a7acefd972543ae43551c8cbe"><td class="memTemplItemLeft" align="right" valign="top">static std::pair&lt; typename std::result_of&lt; Callable(Arguments...)&gt;::type, std::chrono::duration&lt; double &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_code_timing.html#afb917b4a7acefd972543ae43551c8cbe">Run</a> (Callable &amp;&amp;func, Arguments &amp;&amp;... args)</td></tr>
 <tr class="memdesc:afb917b4a7acefd972543ae43551c8cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a function and evaluate its execution time.  <a href="#afb917b4a7acefd972543ae43551c8cbe">More...</a><br /></td></tr>
 <tr class="separator:afb917b4a7acefd972543ae43551c8cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26f8acb38425de5c73719a34851a7f62"><td class="memTemplParams" colspan="2">template&lt;class Callable , class... Arguments&gt; </td></tr>
+<tr class="memitem:a26f8acb38425de5c73719a34851a7f62"><td class="memTemplItemLeft" align="right" valign="top">static std::chrono::duration&lt; double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_code_timing.html#a26f8acb38425de5c73719a34851a7f62">RunVoid</a> (Callable &amp;&amp;func, Arguments &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a26f8acb38425de5c73719a34851a7f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a <code>void</code> function and evaluate its execution time.  <a href="#a26f8acb38425de5c73719a34851a7f62">More...</a><br /></td></tr>
+<tr class="separator:a26f8acb38425de5c73719a34851a7f62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab446ab2a2a6487c2a8ee7561928569e6"><td class="memTemplParams" colspan="2">template&lt;typename Duration &gt; </td></tr>
 <tr class="memitem:ab446ab2a2a6487c2a8ee7561928569e6"><td class="memTemplItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_code_timing.html#ab446ab2a2a6487c2a8ee7561928569e6">FriendlyTime</a> (std::chrono::duration&lt; Duration &gt; diff)</td></tr>
 <tr class="memdesc:ab446ab2a2a6487c2a8ee7561928569e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a <code>std::chrono::duration</code> into a user-friendly string.  <a href="#ab446ab2a2a6487c2a8ee7561928569e6">More...</a><br /></td></tr>
@@ -168,6 +172,54 @@ template&lt;class Callable , class... Arguments&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>std::pair</code> with the first element as the return value of <code>func</code>, and the second element to be the elapsed time. </dd></dl>
+
+</div>
+</div>
+<a id="a26f8acb38425de5c73719a34851a7f62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26f8acb38425de5c73719a34851a7f62">&sect;&nbsp;</a></span>RunVoid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Callable , class... Arguments&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::chrono::duration&lt;double&gt; CodeTiming::RunVoid </td>
+          <td>(</td>
+          <td class="paramtype">Callable &amp;&amp;&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Arguments &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Run a <code>void</code> function and evaluate its execution time. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>The function to be called. </td></tr>
+    <tr><td class="paramname">args</td><td>The arguments to be passed into <code>func</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The elapsed time. </dd></dl>
 
 </div>
 </div>
