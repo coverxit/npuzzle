@@ -30,6 +30,24 @@ public:
     }
 
     /**
+     * \brief Run a \c void function and evaluate its execution time.
+     * @param func The function to be called.
+     * @param args The arguments to be passed into \c func.
+     * @return The elapsed time.
+     */
+    template <class Callable, class... Arguments>
+    static std::chrono::duration<double> RunVoid(Callable&& func, Arguments&&... args)
+    {
+        auto task = std::bind(std::forward<Callable>(func), std::forward<Arguments>(args)...);
+
+        auto start = std::chrono::steady_clock::now();
+        task();
+        auto end = std::chrono::steady_clock::now();
+
+        return end - start;
+    }
+
+    /**
      * \brief Convert a \c std::chrono::duration into a user-friendly string.
      * \param diff The duration to be processed.
      * \return The user-readable string.
