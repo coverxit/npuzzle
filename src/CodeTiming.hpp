@@ -45,7 +45,7 @@ public:
         else if (duration_cast<milliseconds>(diff).count() < 1000)
             stream << duration_cast<milliseconds>(diff).count() << " ms";
         else
-            stream << duration_cast<seconds>(diff).count() << "s";
+            stream << diff.count() << " s";
 
         return stream.str();
     }
