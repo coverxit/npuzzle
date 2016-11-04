@@ -148,7 +148,7 @@ namespace NPuzzle
                         maxQueueLength = queue.size();
                 }
             );
-3
+
             // Set finalNode for later path tracing
             finalNode = result.getFinalNode();
             return result;
