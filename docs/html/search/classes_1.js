@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['generalsearcher',['GeneralSearcher',['../class_general_searcher.html',1,'']]]
+  ['expandresult',['ExpandResult',['../class_expand_result.html',1,'']]]
 ];

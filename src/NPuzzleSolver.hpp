@@ -81,6 +81,7 @@ namespace NPuzzle
         /**
          * \brief Solve the N-Puzzle problem based on a initial state.
          * \param initialState The intital state.
+         * \param finalState The goal state.
          * \return The SearchResult indiciates whether there is a solution.
          */
         NPuzzleSearchResult solve(NPuzzleState initialState, NPuzzleState finalState)
