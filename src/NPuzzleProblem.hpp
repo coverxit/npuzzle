@@ -24,7 +24,7 @@ namespace NPuzzle
          * \param initialState The initial state.
          * \param finalState The final state. 
          */
-        explicit NPuzzleProblem(NPuzzleState initialState, NPuzzleState finalState) 
+        explicit NPuzzleProblem(NPuzzleState initialState, NPuzzleState finalState)
             : Problem(initialState), finalState(finalState) {}
 
         //! \copydoc Problem::goalTest
@@ -40,87 +40,84 @@ namespace NPuzzle
          */
         std::vector<OperatorT> getOperators()
         {
-            // Move up
-            auto moveUp = [&](NPuzzleState state) -> OperationResultT 
+            return std::vector<OperatorT>{ moveRight, moveDown, moveLeft, moveUp };
+        }
+
+    private:
+        static OperationResultT moveLeft(NPuzzleState state)
+        {
+            bool canMove = false;
+
+            // Find blank position.
+            int row, col;
+            int blank = std::find(state.begin(), state.end(), 0) - state.begin();
+            indexToMatrix(blank, row, col);
+
+            if (col - 1 >= 0) // check boundary
             {
-                bool canMove = false;
-                
-                // Find blank position.
-                int row, col;
-                int blank = std::find(state.begin(), state.end(), 0) - state.begin();
-                indexToMatrix(blank, row, col);
+                canMove = true;
+                std::swap(state[blank], state[matrixToIndex(row, col - 1)]);
+            }
 
-                if (row - 1 >= 0) // check boundary
-                {
-                    canMove = true;
-                    std::swap(state[blank], state[matrixToIndex(row - 1, col)]);
-                }
+            return canMove ? OperationResultT::Success(state, moveCost)
+                           : OperationResultT::Failure();
+        }
 
-                return canMove ? OperationResultT::Success(state, moveCost) 
-                               : OperationResultT::Failure();
-            };
+        static OperationResultT moveRight(NPuzzleState state)
+        {
+            bool canMove = false;
 
-            // Move down
-            auto moveDown = [&](NPuzzleState state) -> OperationResultT 
+            // Find blank position.
+            int row, col;
+            int blank = std::find(state.begin(), state.end(), 0) - state.begin();
+            indexToMatrix(blank, row, col);
+
+            if (col + 1 < matrixDemonstration) // check boundary
             {
-                bool canMove = false;
+                canMove = true;
+                std::swap(state[blank], state[matrixToIndex(row, col + 1)]);
+            }
 
-                // Find blank position.
-                int row, col;
-                int blank = std::find(state.begin(), state.end(), 0) - state.begin();
-                indexToMatrix(blank, row, col);
+            return canMove ? OperationResultT::Success(state, moveCost)
+                           : OperationResultT::Failure();
+        }
 
-                if (row + 1 < matrixDemonstration) // check boundary
-                {
-                    canMove = true;
-                    std::swap(state[blank], state[matrixToIndex(row + 1, col)]);
-                }
+        static OperationResultT moveUp(NPuzzleState state)
+        {
+            bool canMove = false;
 
-                return canMove ? OperationResultT::Success(state, moveCost)
-                               : OperationResultT::Failure();
-            };
+            // Find blank position.
+            int row, col;
+            int blank = std::find(state.begin(), state.end(), 0) - state.begin();
+            indexToMatrix(blank, row, col);
 
-            // Move left
-            auto moveLeft = [&](NPuzzleState state) -> OperationResultT 
+            if (row - 1 >= 0) // check boundary
             {
-                bool canMove = false;
+                canMove = true;
+                std::swap(state[blank], state[matrixToIndex(row - 1, col)]);
+            }
 
-                // Find blank position.
-                int row, col;
-                int blank = std::find(state.begin(), state.end(), 0) - state.begin();
-                indexToMatrix(blank, row, col);
+            return canMove ? OperationResultT::Success(state, moveCost)
+                           : OperationResultT::Failure();
+        }
 
-                if (col - 1 >= 0) // check boundary
-                {
-                    canMove = true;
-                    std::swap(state[blank], state[matrixToIndex(row, col - 1)]);
-                }
+        static OperationResultT moveDown(NPuzzleState state)
+        {
+            bool canMove = false;
 
-                return canMove ? OperationResultT::Success(state, moveCost)
-                               : OperationResultT::Failure();
-            };
+            // Find blank position.
+            int row, col;
+            int blank = std::find(state.begin(), state.end(), 0) - state.begin();
+            indexToMatrix(blank, row, col);
 
-            // Move right
-            auto moveRight = [&](NPuzzleState state) -> OperationResultT
+            if (row + 1 < matrixDemonstration) // check boundary
             {
-                bool canMove = false;
+                canMove = true;
+                std::swap(state[blank], state[matrixToIndex(row + 1, col)]);
+            }
 
-                // Find blank position.
-                int row, col;
-                int blank = std::find(state.begin(), state.end(), 0) - state.begin();
-                indexToMatrix(blank, row, col);
-
-                if (col + 1 < matrixDemonstration) // check boundary
-                {
-                    canMove = true;
-                    std::swap(state[blank], state[matrixToIndex(row, col + 1)]);
-                }
-
-                return canMove ? OperationResultT::Success(state, moveCost)
-                               : OperationResultT::Failure();
-            };
-
-            return std::vector<OperatorT> { moveRight, moveDown, moveLeft, moveUp, };
+            return canMove ? OperationResultT::Success(state, moveCost)
+                           : OperationResultT::Failure();
         }
     };
 }
