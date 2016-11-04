@@ -67,7 +67,7 @@ namespace NPuzzle
 
 namespace std
 {
-    //! Specialization template for hashing a NPuzzle::NPuzzleState.
+    //! Specalization template for hashing a NPuzzle::NPuzzleState.
     template<>
     struct hash<NPuzzle::NPuzzleState>
     {
@@ -80,7 +80,7 @@ namespace std
         }
     };
 
-    //! Speicialzation template for hashing a NPuzzle::NPuzzleNode
+    //! Specialzation template for hashing a NPuzzle::NPuzzleNode
     template<>
     struct hash<NPuzzle::NPuzzleNode>
     {
