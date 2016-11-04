@@ -262,10 +262,10 @@ private:
     ExpandResultT expand(NodeT node, std::vector<OperatorT> operators)
     {
         ExpandedStateVectorT states;
-        for (auto move : operators)
+        for (auto action : operators)
         {
-            auto res = move(toState(node));
-            // Only expand nodes on which operations succeeded.
+            auto res = action(toState(node));
+            // Only expand nodes on which the operation succeeded.
             if (res.isSucceeded())
                 states.push_back(res.getState());
         }

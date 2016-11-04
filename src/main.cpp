@@ -6,6 +6,7 @@
 #include <functional>
 #include <map>
 #include <chrono>
+#include <sstream>
 using namespace std;
 
 #include "PriorityQueue.hpp"
@@ -144,8 +145,7 @@ int main(int argc, char* argv[])
         cout << result.getFinalNode().getDepth() << "." << endl;
     }
 
-    cout << "The time elapsed during search is ";
-    cout << chrono::duration<double>(endTime - startTime).count();
-    cout << " s." << endl;
+    cout << "The time elapsed during this search is ";
+    cout << friendlyTime(endTime - startTime) << "." << endl;
     return 0;
 }

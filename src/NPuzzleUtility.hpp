@@ -67,6 +67,21 @@ namespace NPuzzle
                 return countInversions(state) % 2 == 0; // even inversions
         }
     }
+
+    //! Helper function for output time friendly.
+    std::string friendlyTime(std::chrono::duration<double> diff)
+    {
+        using namespace std::chrono;
+
+        std::stringstream stream;
+        if (duration_cast<microseconds>(diff).count() < 1000)
+            stream << duration_cast<microseconds>(diff).count() << " μs";
+        else if (duration_cast<milliseconds>(diff).count() < 1000)
+            stream << duration_cast<milliseconds>(diff).count() << " ms";
+        else
+            stream << duration_cast<seconds>(diff).count() << " s";
+        return stream.str();
+    }
 }
 
 #endif

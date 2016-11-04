@@ -120,7 +120,7 @@ namespace NPuzzle
                                : OperationResultT::Failure();
             };
 
-            return std::vector<OperatorT> { moveUp, moveDown, moveLeft, moveRight };
+            return std::vector<OperatorT> { moveRight, moveDown, moveLeft, moveUp, };
         }
     };
 }
