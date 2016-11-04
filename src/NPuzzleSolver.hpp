@@ -118,7 +118,7 @@ namespace NPuzzle
             visitedState[initialState] = true;
             auto result = searcher.generalSearch(&problem,
                 // Queuing-Function
-                [&](NPuzzleQueue queue, NPuzzleExpandResult expand) -> NPuzzleQueue 
+                [&](NPuzzleQueue& queue, NPuzzleExpandResult expand)
                 {
                     auto currentNode = expand.getCurrentNode();
                    
@@ -138,7 +138,7 @@ namespace NPuzzle
                         totalNodesExpanded++;
                         visitedState[nextState] = true;
 
-                        // Check if final nextState
+                        // Check if nextState goal
                         if (problem.goalTest(nextState))
                             break;
                     }
@@ -146,11 +146,9 @@ namespace NPuzzle
                     // Is the size of current queue larger than previous?
                     if (queue.size() > maxQueueLength)
                         maxQueueLength = queue.size();
-
-                    return queue;
                 }
             );
-
+3
             // Set finalNode for later path tracing
             finalNode = result.getFinalNode();
             return result;

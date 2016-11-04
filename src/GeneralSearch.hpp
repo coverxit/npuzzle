@@ -213,13 +213,13 @@ public:
      *
      * It should be the following form:
      * \code
-     * QueueT queuingFunciton(QueueT queue, ExpandResultT result)
+     * void queuingFunciton(QueueT& queue, ExpandResultT result)
      * {
      *     ...
      * }
      * \endcode
      */
-    typedef std::function<QueueT(QueueT, ExpandResultT)>    QueuingFunctionT;
+    typedef std::function<void(QueueT&, ExpandResultT)>     QueuingFunctionT;
     typedef SearchResult<NodeT>                             SearchResultT;
     /**
      * \brief The type of the function converting \c StateT to \c NodeT.
@@ -304,7 +304,7 @@ public:
                 return SearchResultT::Success(node);
 
             // nodes = QUEUING-FUNCTION(nodes, EXPAND(node, problem.OPERATORS))
-            nodes = queueingFunction(nodes, expand(node, problem->getOperators()));
+            queueingFunction(nodes, expand(node, problem->getOperators()));
         }
     }
 };

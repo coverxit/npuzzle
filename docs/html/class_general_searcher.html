@@ -88,9 +88,9 @@ typedef <a class="el" href="class_expand_result.html">ExpandResult</a>&lt; State
 <tr class="memitem:aca00b27a31bf652ac122fc77b74635dc"><td class="memItemLeft" align="right" valign="top"><a id="aca00b27a31bf652ac122fc77b74635dc"></a>
 typedef <a class="el" href="class_operation_result.html">OperationResult</a>&lt; StateT, ExpandCostT &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>OperationResultT</b></td></tr>
 <tr class="separator:aca00b27a31bf652ac122fc77b74635dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc3ff9663929b531093c0ef42e511696"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; <a class="el" href="class_priority_queue.html">QueueT</a>(<a class="el" href="class_priority_queue.html">QueueT</a>, <a class="el" href="class_expand_result.html">ExpandResultT</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_general_searcher.html#afc3ff9663929b531093c0ef42e511696">QueuingFunctionT</a></td></tr>
-<tr class="memdesc:afc3ff9663929b531093c0ef42e511696"><td class="mdescLeft">&#160;</td><td class="mdescRight">The queuing function type.  <a href="#afc3ff9663929b531093c0ef42e511696">More...</a><br /></td></tr>
-<tr class="separator:afc3ff9663929b531093c0ef42e511696"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a124d5157ea988698bce9b357b2357160"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(<a class="el" href="class_priority_queue.html">QueueT</a> &amp;, <a class="el" href="class_expand_result.html">ExpandResultT</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_general_searcher.html#a124d5157ea988698bce9b357b2357160">QueuingFunctionT</a></td></tr>
+<tr class="memdesc:a124d5157ea988698bce9b357b2357160"><td class="mdescLeft">&#160;</td><td class="mdescRight">The queuing function type.  <a href="#a124d5157ea988698bce9b357b2357160">More...</a><br /></td></tr>
+<tr class="separator:a124d5157ea988698bce9b357b2357160"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a230ae6d70de61034c947d0d75d59a9b8"><td class="memItemLeft" align="right" valign="top"><a id="a230ae6d70de61034c947d0d75d59a9b8"></a>
 typedef <a class="el" href="class_search_result.html">SearchResult</a>&lt; NodeT &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SearchResultT</b></td></tr>
 <tr class="separator:a230ae6d70de61034c947d0d75d59a9b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -106,7 +106,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad2526990ec18a63ede7c93c2739120df"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_general_searcher.html#ad2526990ec18a63ede7c93c2739120df">GeneralSearcher</a> (<a class="el" href="class_general_searcher.html#a8d57b193876336e6dfef7ed9ca16ec19">NodeMakerT</a> makeNode, <a class="el" href="class_general_searcher.html#a36899f5827e33f3e0aea5a262412f4e6">ToStateT</a> toState, <a class="el" href="class_general_searcher.html#a79146e5f7d506368cfd32773dc6c8056">QueueComparatorT</a> queueComparator)</td></tr>
 <tr class="separator:ad2526990ec18a63ede7c93c2739120df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c22442e1f904da4eb0b061ef92b855c"><td class="memItemLeft" align="right" valign="top"><a id="a6c22442e1f904da4eb0b061ef92b855c"></a>
-<a class="el" href="class_search_result.html">SearchResultT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_general_searcher.html#a6c22442e1f904da4eb0b061ef92b855c">generalSearch</a> (<a class="el" href="class_problem.html">ProblemT</a> *problem, <a class="el" href="class_general_searcher.html#afc3ff9663929b531093c0ef42e511696">QueuingFunctionT</a> queueingFunction)</td></tr>
+<a class="el" href="class_search_result.html">SearchResultT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_general_searcher.html#a6c22442e1f904da4eb0b061ef92b855c">generalSearch</a> (<a class="el" href="class_problem.html">ProblemT</a> *problem, <a class="el" href="class_general_searcher.html#a124d5157ea988698bce9b357b2357160">QueuingFunctionT</a> queueingFunction)</td></tr>
 <tr class="memdesc:a6c22442e1f904da4eb0b061ef92b855c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>function general-search(problem, QUEUEING-FUNCTION)</code> <br /></td></tr>
 <tr class="separator:a6c22442e1f904da4eb0b061ef92b855c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -143,8 +143,8 @@ template&lt;class StateT , class NodeT , typename ExpandCostT &gt; </div>
 <p>It should be the following form: </p><div class="fragment"><div class="line">NodeT makeNode(StateT state)</div><div class="line">{</div><div class="line">    ...</div><div class="line">}</div></div><!-- fragment --> 
 </div>
 </div>
-<a id="afc3ff9663929b531093c0ef42e511696"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc3ff9663929b531093c0ef42e511696">&sect;&nbsp;</a></span>QueuingFunctionT</h2>
+<a id="a124d5157ea988698bce9b357b2357160"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a124d5157ea988698bce9b357b2357160">&sect;&nbsp;</a></span>QueuingFunctionT</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -152,13 +152,13 @@ template&lt;class StateT , class NodeT , typename ExpandCostT &gt; </div>
 template&lt;class StateT , class NodeT , typename ExpandCostT &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;<a class="el" href="class_priority_queue.html">QueueT</a>(<a class="el" href="class_priority_queue.html">QueueT</a>, <a class="el" href="class_expand_result.html">ExpandResultT</a>)&gt; <a class="el" href="class_general_searcher.html">GeneralSearcher</a>&lt; StateT, NodeT, ExpandCostT &gt;::<a class="el" href="class_general_searcher.html#afc3ff9663929b531093c0ef42e511696">QueuingFunctionT</a></td>
+          <td class="memname">typedef std::function&lt;void(<a class="el" href="class_priority_queue.html">QueueT</a>&amp;, <a class="el" href="class_expand_result.html">ExpandResultT</a>)&gt; <a class="el" href="class_general_searcher.html">GeneralSearcher</a>&lt; StateT, NodeT, ExpandCostT &gt;::<a class="el" href="class_general_searcher.html#a124d5157ea988698bce9b357b2357160">QueuingFunctionT</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The queuing function type. </p>
-<p>It should be the following form: </p><div class="fragment"><div class="line">QueueT queuingFunciton(QueueT queue, ExpandResultT result)</div><div class="line">{</div><div class="line">    ...</div><div class="line">}</div></div><!-- fragment --> 
+<p>It should be the following form: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> queuingFunciton(QueueT&amp; queue, ExpandResultT result)</div><div class="line">{</div><div class="line">    ...</div><div class="line">}</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="a36899f5827e33f3e0aea5a262412f4e6"></a>
