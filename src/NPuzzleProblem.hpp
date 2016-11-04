@@ -30,7 +30,8 @@ namespace NPuzzle
         //! \copydoc Problem::goalTest
         bool goalTest(NPuzzleState state)
         {
-            return finalState == state;
+            auto hasher = std::hash<NPuzzleState>();
+            return hasher(finalState) == hasher(state);
         }
 
         /**

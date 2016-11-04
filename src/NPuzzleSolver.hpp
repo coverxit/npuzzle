@@ -24,13 +24,13 @@ namespace NPuzzle
         unsigned int totalNodesExpanded = 0;
         unsigned int maxQueueLength = 1; // The initial state is in queue.
 
-        // Record visited states
-        std::map<NPuzzleState, bool> visitedState;
+        // Record visited states, use hash(state) as the key.
+        std::unordered_set<std::size_t> visitedState;
         // Heuristic function
         NPuzzleCostFunction hFunc;
 
         // Mapping from the children node to its parent node, used in tracing path
-        std::map<NPuzzleNode, NPuzzleNode> expandMapping;
+        std::unordered_map<NPuzzleNode, NPuzzleNode> expandMapping;
         // Record the final node for trace path
         NPuzzleNode finalNode;
 
@@ -115,7 +115,7 @@ namespace NPuzzle
                 }
             );
 
-            visitedState[initialState] = true;
+            visitedState.insert(std::hash<NPuzzleState>()(initialState));
             auto result = searcher.generalSearch(&problem,
                 // Queuing-Function
                 [&](NPuzzleQueue& queue, NPuzzleExpandResult expand)
@@ -124,8 +124,10 @@ namespace NPuzzle
                    
                     for (auto nextState : expand.getExpandedState())
                     {
+                        auto hashVal = std::hash<NPuzzleState>()(nextState);
+
                         // Has this expanded state visited?
-                        if (visitedState[nextState])
+                        if (visitedState.find(hashVal) != visitedState.end())
                             continue;
 
                         // Enqueue a new node with expanded nextState and depth + 1
@@ -136,7 +138,7 @@ namespace NPuzzle
     
                         // Update associated fields
                         totalNodesExpanded++;
-                        visitedState[nextState] = true;
+                        visitedState.insert(hashVal);
 
                         // Check if nextState goal
                         if (problem.goalTest(nextState))

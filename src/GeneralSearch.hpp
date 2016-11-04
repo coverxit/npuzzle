@@ -91,7 +91,6 @@ protected:
 public:
     /**
      * \param initialState The initial state.
-     * \return An instance of a class derived from Problem.
      */
     explicit Problem(StateT initialState) : initialState(initialState) {}
 
@@ -277,7 +276,6 @@ public:
      * \param makeNode The function converts \c StateT to \c NodeT.
      * \param toState The function converts \c NodeT to \c StateT.
      * \param queueComparator The comparator used in PriorityQueue.
-     * \return An instance of a class derived from GeneralSearcher.
      */
     GeneralSearcher(NodeMakerT makeNode, ToStateT toState, QueueComparatorT queueComparator)
         : makeNode(makeNode), toState(toState), queueComparator(queueComparator) {}

@@ -31,7 +31,6 @@ namespace NPuzzle
         /**
          * \param state The state to be stored in node.
          * \param depth The depth to be stored in node.
-         * \return A queue node with specific state and depth.
          */
         NPuzzleNode(NPuzzleState state, int depth) : state(state), depth(depth) {};
 
@@ -44,15 +43,6 @@ namespace NPuzzle
         int getDepth() const { return depth; }
         //! Set the expanded depth of this node.
         void setDepth(int depth) { this->depth = depth; }
-
-        //! Override operator < for std::map, used in NPuzzleSolver.
-        bool operator<(const NPuzzleNode& rhs) const
-        {
-            if (depth != rhs.depth)
-                return depth < rhs.depth;
-            else
-                return state < rhs.state;
-        }
     };
 
     /**

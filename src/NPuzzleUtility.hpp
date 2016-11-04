@@ -43,7 +43,7 @@ namespace NPuzzle
         return count;
     }
 
-    //! Helpr function for checking solvability.
+    //! Helper function for checking solvability.
     bool isSolvable(NPuzzleState state) {
         if (matrixDemonstration % 2) {
             // If the grid width is odd, the number of inversions in solvable
@@ -63,6 +63,47 @@ namespace NPuzzle
                 return countInversions(state) % 2 == 0; // even inversions
         }
     }
+}
+
+namespace std
+{
+    //! Specialization template for hashing a NPuzzle::NPuzzleState.
+    template<>
+    struct hash<NPuzzle::NPuzzleState>
+    {
+        std::size_t operator()(const NPuzzle::NPuzzleState& state) const
+        {
+            std::size_t ret = 17;
+            for (auto& e : state)
+                ret = ret * 31 + std::hash<int>()(e);
+            return ret;
+        }
+    };
+
+    //! Speicialzation template for hashing a NPuzzle::NPuzzleNode
+    template<>
+    struct hash<NPuzzle::NPuzzleNode>
+    {
+        std::size_t operator()(const NPuzzle::NPuzzleNode& node) const
+        {
+            std::size_t ret = 17;
+            ret = ret * 31 + hash<int>()(node.getDepth());
+            ret = ret * 31 + hash<NPuzzle::NPuzzleState>()(node.getState());
+            return ret;
+        }
+    };
+
+    //! Specialzation template for comparing NPuzzle::NPuzzleNode.
+    template<>
+    struct equal_to<NPuzzle::NPuzzleNode>
+    {
+        bool operator()(const NPuzzle::NPuzzleNode& a, const NPuzzle::NPuzzleNode& b) const
+        {
+            auto hasher = hash<NPuzzle::NPuzzleState>();
+            return a.getDepth() == b.getDepth() &&
+                   hasher(a.getState()) == hasher(b.getState());
+        }
+    };
 }
 
 #endif
