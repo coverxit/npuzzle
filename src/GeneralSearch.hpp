@@ -160,32 +160,34 @@ public:
  * \brief The result of expanding a node in the queue.
  * \tparam StateT The state type used in a Problem.
  * \tparam NodeT The node type used in a GeneralSearcher.
+ * \tparam ExpandCostT The expanding cost type used in a Problem.
  *
  * For 8-puzzle, the \c StateT is \c std::array.
  */
-template <class StateT, class NodeT>
+template <class StateT, class NodeT, class ExpandCostT>
 class ExpandResult
 {
 public:
-    typedef std::vector<StateT> ExpandedStateVectorT;
+    typedef std::pair<StateT, ExpandCostT> ResultPairT;
+    typedef std::vector<ResultPairT>       ResultVectorT;
 
 private:
     NodeT currentNode;
-    ExpandedStateVectorT expandedStates;
+    ResultVectorT result;
 
 public:
     /**
      * \brief Create a expanding result.
      * \param expandedNode The node expanded.
-     * \param expandedStates The states expanded from the node.
+     * \param result The states expanded and their cost from the node.
      */
-    ExpandResult(NodeT expandedNode, ExpandedStateVectorT expandedStates) :
-        currentNode(expandedNode), expandedStates(expandedStates) {}
+    ExpandResult(NodeT expandedNode, ResultVectorT result) :
+        currentNode(expandedNode), result(result) {}
 
     //! Get the expanded node.
     NodeT getCurrentNode() const { return currentNode; }
-    //! Get states expanded from the node.
-    ExpandedStateVectorT getExpandedState() const { return expandedStates; }
+    //! Get states expanded and their cost from the node.
+    ResultVectorT getResult() const { return result; }
 };
 
 /**
@@ -205,7 +207,7 @@ public:
     typedef PriorityQueue<NodeT>                            QueueT;
     //! Refer to \ref PriorityQueue::ComparatorT.
     typedef typename QueueT::ComparatorT                    QueueComparatorT;
-    typedef ExpandResult<StateT, NodeT>                     ExpandResultT;
+    typedef ExpandResult<StateT, NodeT, ExpandCostT>        ExpandResultT;
     typedef OperationResult<StateT, ExpandCostT>            OperationResultT;
     /**
      * \brief The queuing function type.
@@ -248,7 +250,7 @@ public:
 private:
     typedef Problem<StateT, ExpandCostT>                    ProblemT;
     typedef typename ProblemT::OperatorT                    OperatorT;
-    typedef typename ExpandResultT::ExpandedStateVectorT    ExpandedStateVectorT;
+    typedef typename ExpandResultT::ResultVectorT           ExpandResultVectorT;
 
 private:
     // Converters between StateT and NodeT.
@@ -260,15 +262,15 @@ private:
 private:
     ExpandResultT expand(NodeT node, std::vector<OperatorT> operators)
     {
-        ExpandedStateVectorT states;
+        ExpandResultVectorT result;
         for (auto action : operators)
         {
             auto res = action(toState(node));
             // Only expand nodes on which the operation succeeded.
             if (res.isSucceeded())
-                states.push_back(res.getState());
+                result.push_back(std::make_pair(res.getState(), res.getCost()));
         }
-        return ExpandResultT(node, states);
+        return ExpandResultT(node, result);
     }
 
 public:

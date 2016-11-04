@@ -122,8 +122,11 @@ namespace NPuzzle
                 {
                     auto currentNode = expand.getCurrentNode();
                    
-                    for (auto nextState : expand.getExpandedState())
+                    for (auto expRes : expand.getResult())
                     {
+                        // For N-Puzzle, since the depth is the expanding cost.
+                        // So we ignore the second element of expRes.
+                        auto nextState = expRes.first;
                         auto hashVal = std::hash<NPuzzleState>()(nextState);
 
                         // Has this expanded state visited?
