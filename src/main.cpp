@@ -9,6 +9,8 @@
 #include <sstream>
 using namespace std;
 
+#include "CodeTiming.hpp"
+
 #include "PriorityQueue.hpp"
 #include "GeneralSearch.hpp"
 
@@ -105,12 +107,8 @@ int main(int argc, char* argv[])
     printState(initialState);
     cout << endl;
 
-    // Code timing
-    auto startTime = chrono::steady_clock::now();
-    auto result = solver.solve(initialState, finalState);
-    auto endTime = chrono::steady_clock::now();
-
-    if (!result.isSucceeded())
+    auto result = CodeTiming::Run(&NPuzzleSolver::solve, &solver, initialState, finalState);
+    if (!result.first.isSucceeded())
         cout << "No solution!" << endl;
     else
     {
@@ -139,13 +137,13 @@ int main(int argc, char* argv[])
     cout << "The maximum number of nodes in the queue at any one time was ";
     cout << solver.getMaxQueueLength() << "." << endl;
 
-    if (result.isSucceeded())
+    if (result.first.isSucceeded())
     {
         cout << "The depth of the goal node was ";
-        cout << result.getFinalNode().getDepth() << "." << endl;
+        cout << result.first.getFinalNode().getDepth() << "." << endl;
     }
 
     cout << "The time elapsed during this search is ";
-    cout << friendlyTime(endTime - startTime) << "." << endl;
+    cout << CodeTiming::FriendlyTime(result.second) << "." << endl;
     return 0;
 }

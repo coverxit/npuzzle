@@ -44,16 +44,12 @@ namespace NPuzzle
     }
 
     //! Helpr function for checking solvability.
-    bool isSolvable(NPuzzleState state)
-    {
-        if (matrixDemonstration % 2)
-        {
+    bool isSolvable(NPuzzleState state) {
+        if (matrixDemonstration % 2) {
             // If the grid width is odd, the number of inversions in solvable
             // state should be even.
             return countInversions(state) % 2 == 0;
-        }
-        else
-        {
+        } else {
             // For a even grid, if the blank on an even row counting from the bottom,
             // then the number of inversions in solvable state should be odd.
             // Otherwise, if the blank on an odd row, the number of inversions should be even.
@@ -66,21 +62,6 @@ namespace NPuzzle
             else                                        // odd blank
                 return countInversions(state) % 2 == 0; // even inversions
         }
-    }
-
-    //! Helper function for output time friendly.
-    std::string friendlyTime(std::chrono::duration<double> diff)
-    {
-        using namespace std::chrono;
-
-        std::stringstream stream;
-        if (duration_cast<microseconds>(diff).count() < 1000)
-            stream << duration_cast<microseconds>(diff).count() << " μs";
-        else if (duration_cast<milliseconds>(diff).count() < 1000)
-            stream << duration_cast<milliseconds>(diff).count() << " ms";
-        else
-            stream << duration_cast<seconds>(diff).count() << " s";
-        return stream.str();
     }
 }
 
