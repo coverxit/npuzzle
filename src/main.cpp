@@ -133,7 +133,9 @@ int main(int argc, char* argv[])
         cout << "Goal!!" << endl << endl;
     }
 
-    cout << "To solve this problem, the search algorithm expanded a total of ";
+    cout << "To solve this problem, ";
+    cout << CodeTiming::FriendlyTime(result.second) << " has elapsed." << endl;
+    cout << "The search algorithm expanded a total of ";
     cout << solver.getTotalNodesExpanded() << " nodes." << endl;
     cout << "The maximum number of nodes in the queue at any one time was ";
     cout << solver.getMaxQueueLength() << "." << endl;
@@ -144,7 +146,5 @@ int main(int argc, char* argv[])
         cout << result.first.getFinalNode().getDepth() << "." << endl;
     }
 
-    cout << "The time elapsed during this search is ";
-    cout << CodeTiming::FriendlyTime(result.second) << "." << endl;
     return 0;
 }
