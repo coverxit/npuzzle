@@ -7,13 +7,14 @@ CFLAGS = -c -O3 -std=c++11
 LDFLAGS = 
 
 TARGET = $(BINDIR)/$(EXECUTABLE)
+HEADERS = $(wildcard $(addsuffix /*.hpp,$(SRCDIR)))
 SOURCES = $(wildcard $(addsuffix /*.cpp,$(SRCDIR)))
 OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 
 .PHONY: all
 all: $(TARGET)
 
-$(OBJECTS): %.o : %.cpp
+$(OBJECTS): %.o : %.cpp $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ $<
 
 $(TARGET): $(OBJECTS) | $(BINDIR)
