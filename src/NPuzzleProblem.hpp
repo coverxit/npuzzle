@@ -41,7 +41,7 @@ namespace NPuzzle
          */
         std::vector<OperatorT> getOperators()
         {
-            return std::vector<OperatorT>{ moveRight, moveDown, moveLeft, moveUp };
+            return std::vector<OperatorT>{ moveLeft, moveRight, moveUp, moveDown };
         }
 
     private:

@@ -103,15 +103,7 @@ namespace NPuzzle
                     // The element with less f(n) has higher priority,
                     // which actually constructs a min-heap.
                     // (The STL heap is a max-heap default)
-                    int costA = GFunc(a) + hFunc(a);
-                    int costB = GFunc(b) + hFunc(b);
-
-                    // If we got two nodes with the same priority,
-                    // then we prefer the node with shallower depth.
-                    if (costA == costB)
-                        return GFunc(a) > GFunc(b);
-                    else // Maintain a min-heap.
-                        return costA > costB;
+                    return GFunc(a) + hFunc(a) > GFunc(b) + hFunc(b);
                 }
             );
 
