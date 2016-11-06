@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['codetiming_2ehpp',['CodeTiming.hpp',['../_code_timing_8hpp.html',1,'']]]
+  ['generalsearch_2ehpp',['GeneralSearch.hpp',['../_general_search_8hpp.html',1,'']]]
 ];
